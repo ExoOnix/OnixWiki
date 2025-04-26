@@ -11,7 +11,7 @@ import { useInitials } from '@/hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { Menu } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
@@ -177,14 +177,10 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 ) : (
                                     <div className="flex flex-col space-y-2 p-4">
                                         <Button asChild>
-                                            <Link href={ route('login') }>
-                                                Login
-                                            </Link>
+                                            <Link href={route('login')}>Login</Link>
                                         </Button>
                                         <Button asChild>
-                                            <Link href={ route('register') }>
-                                                Signup
-                                            </Link>
+                                            <Link href={route('register')}>Signup</Link>
                                         </Button>
                                     </div>
                                 )}
