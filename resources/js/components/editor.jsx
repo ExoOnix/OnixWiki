@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
+import List from '@editorjs/list'
 
 export default function Editor({ value, onChange }) {
     const editorRef = useRef(null);
@@ -12,13 +13,8 @@ export default function Editor({ value, onChange }) {
                 holder: editorRef.current,
                 autofocus: true,
                 tools: {
-                    header: {
-                        class: Header,
-                        config: {
-                            placeholder: 'Enter a header',
-                            defaultLevel: 3
-                        }
-                    },
+                    header: Header,
+                    list: List,
                 },
                 data: value ? JSON.parse(value) : {},
                 onReady: () => {
