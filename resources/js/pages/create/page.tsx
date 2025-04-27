@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { FormEventHandler } from 'react';
+import Editor from '@/components/editor';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -46,9 +47,13 @@ export default function Home({ page }: HomeProps) {
             <Head title='Create Page' />
             <div className="flex h-full flex-1 rounded-xl p-4">
                 <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min">
-                    <form className="mt-4 ms-4 space-y-4" onSubmit={submit}>
+                    <form className="mt-4 ms-auto me-auto w-[85%] space-y-4" onSubmit={submit}>
+                        <h1>Editor</h1>
+
                         <div>
-                            <Label htmlFor="title">Title</Label>
+                            <Label htmlFor="title" className="block text-sm font-medium">
+                                Title
+                            </Label>
                             <Input
                                 id="title"
                                 name="title"
@@ -61,19 +66,15 @@ export default function Home({ page }: HomeProps) {
                             {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
                         </div>
                         <div>
-                            <Label htmlFor="content">Content</Label>
-                            <Textarea
-                                id="content"
-                                name="content"
-                                placeholder="Enter the content"
-                                className="mt-1 w-full h-96"
-                                rows={6}
-                                value={data.content}
-                                onChange={(e) => setData('content', e.target.value)}
-                            />
+                            <Label htmlFor="content" className="block text-sm font-medium">
+                                Content
+                            </Label>
+                            <div className="mt-1 w-full">
+                                <Editor value={data.content} onChange={(value: string) => setData('content', value)} />
+                            </div>
                             {errors.content && <p className="text-red-500 text-sm mt-1">{errors.content}</p>}
                         </div>
-                        <Button type="submit" disabled={processing}>
+                        <Button className='mb-5' type="submit" disabled={processing}>
                             {processing ? 'Creating...' : 'Create Page'}
                         </Button>
                     </form>
