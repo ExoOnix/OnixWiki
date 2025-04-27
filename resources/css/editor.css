@@ -1,0 +1,110 @@
+.ce-block__content,
+.ce-toolbar__content {
+    width: 100%;
+    max-width: none;
+}
+.codex-editor__redactor {
+    padding-bottom: 0 !important;
+}
+
+/* Dark mode */
+.dark .cdx-block,
+.dark .ce-header,
+.dark .inlineToolButton,
+.dark .ce-toolbar__plus,
+.dark .ce-toolbar__settings-btn,
+.dark .ce-popover__search {
+  color: white;
+}
+
+.dark .ce-toolbar__plus:hover,
+.dark .ce-toolbar__settings-btn:hover,
+.dark .cdx-loader,
+.dark .cdx-button {
+  color: white;
+  background-color: #262626;
+}
+
+.dark .cdx-button:hover {
+  background-color: #2f2f2f;
+}
+
+.dark .ce-popover,
+.dark .ce-popover-item,
+.dark .ce-popover-item__icon,
+.dark .ce-popover-items,
+.dark .ce-popover__container,
+.dark .cdx-search-field__input,
+.dark .cdx-search-field__icon,
+.dark .ce-popover__search,
+.dark .ce-popover-item:hover {
+  --color-background-item-hover: #2f2f2f;
+  background-color: #262626;
+  color: white;
+  border: none !important;
+}
+.dark .ce-popover-item--active {
+    background-color: var(--color-text-icon-active) !important;
+    color: white !important;
+    border: none !important; /* Ensure no border interferes */
+}
+
+.dark .ce-popover-item--active .ce-popover-item__icon {
+    background-color: var(--color-text-icon-active) !important; /* Fully fill the icon */
+    border-radius: 4px; /* Optional: Add slight rounding for better visuals */
+}
+
+.dark .ce-inline-tool {
+    color: white !important;
+}
+.dark .ce-inline-tool:hover {
+    background-color: #2f2f2f !important;
+}
+
+.dark .ce-inline-tool--active {
+    background-color: var(--color-text-icon-active) !important;
+}
+
+.dark .ce-block--selected {
+    background: #2f2f2f !important;
+}
+
+.dark .ce-block__content:not(.ce-block--selected) {
+    background: transparent !important;
+}
+
+.dark .ce-inline-tool-input {
+    background: #2f2f2f !important;
+    color: white !important;
+    border: 1px solid rgba(226, 226, 229, 0.2) !important;
+}
+
+.dark .ce-popover-item[data-item-name="bold"] {
+    background-color: transparent !important; /* Remove default highlight */
+    color: white !important;
+    border-radius: 4px;
+    transition: background-color 0.2s ease; /* Smooth transition */
+}
+
+.dark .ce-popover-item[data-item-name="bold"]:hover {
+    background-color: #383838 !important; /* Apply consistent dark hover */
+    color: white !important;
+}
+
+.dark .ce-popover-item[data-item-name="bold"].ce-popover-item--active {
+    background-color: var(--color-text-icon-active) !important; /* Set active state to blue */
+    color: white !important;
+}
+
+.dark .ce-popover-item[data-item-name="bold"] .ce-popover-item__icon {
+    background-color: transparent !important; /* Ensure icon background is transparent by default */
+    transition: background-color 0.2s ease; /* Smooth transition */
+}
+
+.dark .ce-popover-item[data-item-name="bold"]:hover .ce-popover-item__icon {
+    background-color: inherit !important; /* Match the button's hover background */
+}
+
+.dark .ce-popover-item[data-item-name="bold"].ce-popover-item--active .ce-popover-item__icon {
+    background-color: var(--color-text-icon-active) !important; /* Match the button's active background */
+}

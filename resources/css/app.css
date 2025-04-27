@@ -158,15 +158,6 @@
     }
 }
 
-.ce-block__content,
-.ce-toolbar__content {
-    width: 100%; /* Matches the width of the parent container */
-    max-width: none;
-}
-.codex-editor__redactor {
-    padding-bottom: 0 !important;
-}
-
 h1.ce-header{
   @apply text-3xl font-bold
 }
