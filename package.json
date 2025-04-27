@@ -24,6 +24,7 @@
     },
     "dependencies": {
         "@editorjs/editorjs": "^2.30.8",
+        "@editorjs/header": "^2.8.8",
         "@headlessui/react": "^2.2.0",
         "@inertiajs/react": "^2.0.0",
         "@radix-ui/react-avatar": "^1.1.3",

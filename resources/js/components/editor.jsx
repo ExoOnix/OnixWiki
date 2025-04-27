@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import EditorJS from '@editorjs/editorjs';
+import Header from '@editorjs/header';
 
 export default function Editor({ value, onChange }) {
     const editorRef = useRef(null);
@@ -10,6 +11,15 @@ export default function Editor({ value, onChange }) {
             ejInstance.current = new EditorJS({
                 holder: editorRef.current,
                 autofocus: true,
+                tools: {
+                    header: {
+                        class: Header,
+                        config: {
+                            placeholder: 'Enter a header',
+                            defaultLevel: 3
+                        }
+                    },
+                },
                 data: value ? JSON.parse(value) : {},
                 onReady: () => {
                     console.log('Editor.js is ready to work!');
