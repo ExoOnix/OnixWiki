@@ -23,6 +23,7 @@
         "typescript-eslint": "^8.23.0"
     },
     "dependencies": {
+        "@editorjs/delimiter": "^1.4.2",
         "@editorjs/editorjs": "^2.30.8",
         "@editorjs/header": "^2.8.8",
         "@editorjs/list": "^2.0.6",

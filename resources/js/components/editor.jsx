@@ -1,7 +1,10 @@
 import { useEffect, useRef } from 'react';
 import EditorJS from '@editorjs/editorjs';
+
+// Extensions
 import Header from '@editorjs/header';
 import List from '@editorjs/list'
+import Delimiter from '@editorjs/delimiter';
 
 export default function Editor({ value, onChange }) {
     const editorRef = useRef(null);
@@ -15,6 +18,7 @@ export default function Editor({ value, onChange }) {
                 tools: {
                     header: Header,
                     list: List,
+                    delimiter: Delimiter,
                 },
                 data: value ? JSON.parse(value) : {},
                 onReady: () => {
