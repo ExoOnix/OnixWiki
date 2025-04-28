@@ -43,3 +43,4 @@ export interface User {
 }
 
 export * from './models/page';
+export * from './editor/editor';

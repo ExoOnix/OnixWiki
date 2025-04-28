@@ -79,6 +79,25 @@
     border: 1px solid rgba(226, 226, 229, 0.2) !important;
 }
 
+@media (max-width: 768px) {
+  .dark .ce-toolbar__plus,
+  .dark .ce-toolbar__settings-btn,
+  .dark .ce-inline-tool-input {
+    background: unset !important;
+    color: unset !important;
+    border: none !important;
+  }
+}
+
+@media (max-width: 650px) {
+  .dark .ce-toolbar__plus,
+  .dark .ce-toolbar__settings-btn {
+    background: #2f2f2f !important;
+    color: white !important;
+    border: 1px solid rgba(226, 226, 229, 0.2) !important;
+  }
+}
+
 .dark .ce-popover-item[data-item-name="bold"] {
     background-color: transparent !important; /* Remove default highlight */
     color: white !important;

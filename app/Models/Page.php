@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 
 class Page extends Model
 {
-    use Sluggable;
+    use Sluggable, SluggableScopeHelpers;
 
 
     protected $fillable = [
@@ -28,5 +29,9 @@ class Page extends Model
                 'source' => 'title'
             ]
         ];
+    }
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 }

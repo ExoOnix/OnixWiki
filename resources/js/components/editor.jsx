@@ -5,6 +5,7 @@ import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import List from '@editorjs/list'
 import Delimiter from '@editorjs/delimiter';
+import ColorPicker from 'editorjs-color-picker';
 
 export default function Editor({ value, onChange }) {
     const editorRef = useRef(null);
@@ -19,6 +20,9 @@ export default function Editor({ value, onChange }) {
                     header: Header,
                     list: List,
                     delimiter: Delimiter,
+                    ColorPicker: {
+                        class: ColorPicker,
+                    },
                 },
                 data: value ? JSON.parse(value) : {},
                 onReady: () => {

@@ -11,7 +11,7 @@ use App\Models\Page;
 
 class PageController extends Controller
 {
-    public function index()
+    public function home()
     {
         $homepage = Page::where('slug', 'home')->first();
         if ($homepage) {
@@ -35,5 +35,11 @@ class PageController extends Controller
         $page = Page::create($validated);
 
         return redirect()->route('home')->with('success', 'Page created successfully!');
+    }
+    public function show(Page $page)
+    {
+        return Inertia::render('wiki/show', [
+            'page' => $page,
+        ]);
     }
 }

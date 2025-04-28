@@ -158,21 +158,30 @@
     }
 }
 
-h1.ce-header{
-  @apply text-3xl font-bold
+h1.ce-header, h1.viewer-content {
+    @apply text-4xl font-bold;
 }
-h2.ce-header{
-  @apply text-2xl font-semibold
+h2.ce-header, h2.viewer-content {
+    @apply text-3xl font-semibold;
 }
-h3.ce-header{
-  @apply text-xl font-semibold
+h3.ce-header, h3.viewer-content {
+    @apply text-2xl font-semibold;
 }
-h4.ce-header{
-  @apply text-lg font-semibold
+h4.ce-header, h4.viewer-content {
+    @apply text-xl font-semibold;
 }
-h5.ce-header{
-  @apply text-base font-semibold
+h5.ce-header, h5.viewer-content {
+    @apply text-lg font-semibold;
 }
-h6.ce-header{
-  @apply text-base font-semibold
+h6.ce-header, h6.viewer-content {
+    @apply text-base font-semibold;
+}
+
+ul.viewer-content, ol.viewer-content {
+    list-style: revert;
+    padding-left: 1.5rem;
+}
+
+.viewer-content {
+    margin-bottom: 0.7rem;
 }

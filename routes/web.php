@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 use App\Http\Controllers\Wiki\PageController;
 
-Route::get('/', [PageController::class, 'index'])->name('home');
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/wiki/{page}', [PageController::class, 'show'])->name('wiki.page');
+
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('create')->group(function () {
