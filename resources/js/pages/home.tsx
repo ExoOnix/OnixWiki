@@ -36,7 +36,7 @@ export default function Home({ page }: HomeProps) {
               <br />
               {!page && auth.user && ( // Check if user is logged in
                 <Button variant="outline" asChild>
-                  <Link href={route('create.page', { title: 'Home' })}>
+                  <Link href={route('pages.create', { title: 'Home' })}>
                     Create Page
                   </Link>
                 </Button>

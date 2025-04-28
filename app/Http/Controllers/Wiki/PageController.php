@@ -23,7 +23,7 @@ class PageController extends Controller
     }
     public function create()
     {
-        return Inertia::render('create/page');
+        return Inertia::render('pages/create');
     }
     public function store(Request $request)
     {
@@ -34,12 +34,27 @@ class PageController extends Controller
 
         $page = Page::create($validated);
 
-        return redirect()->route('home')->with('success', 'Page created successfully!');
+        return redirect()->route('pages.show', $page)->with('success', 'Page created successfully!');
     }
     public function show(Page $page)
     {
-        return Inertia::render('wiki/show', [
+        return Inertia::render('pages/show', [
             'page' => $page,
         ]);
+    }
+    public function edit(Page $page)
+    {
+        return Inertia::render('pages/edit', [
+            'page' => $page,
+        ]);
+    }
+    public function update(Request $request, Page $page) {
+        $validated = $request->validate([
+            'content' => 'required|string',
+        ]);
+
+        $page->update($validated);
+
+        return redirect()->route('pages.show', $page)->with('success', 'Page created successfully!');
     }
 }

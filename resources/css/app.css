@@ -185,3 +185,8 @@ ul.viewer-content, ol.viewer-content {
 .viewer-content {
     margin-bottom: 0.7rem;
 }
+
+p.viewer-content a {
+  color: blue;
+  text-decoration: underline;
+}

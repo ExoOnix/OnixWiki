@@ -10,12 +10,8 @@ import Editor from '@/components/editor';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Create',
-        href: '/create',
+        href: '/pages/create',
     },
-    {
-        title: 'Page',
-        href: '/create/page',
-    }
 ];
 
 interface HomeProps {
@@ -38,7 +34,7 @@ export default function Home({ page }: HomeProps) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('store.page'));
+        post(route('pages.store'));
     };
 
     return (
@@ -47,7 +43,7 @@ export default function Home({ page }: HomeProps) {
             <div className="flex h-full flex-1 rounded-xl p-4">
                 <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min">
                     <form className="mt-4 ms-auto me-auto w-[85%] space-y-4" onSubmit={submit}>
-                        <h1>Editor</h1>
+                        <h1 className='text-4xl'>Editor</h1>
 
                         <div>
                             <Label htmlFor="title" className="block text-sm font-medium">

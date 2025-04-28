@@ -6,13 +6,6 @@ import { Link } from '@inertiajs/react';
 import BlockViewer from '@/components/block-viewer';
 
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Home',
-        href: '/',
-    },
-];
-
 interface HomeProps {
     page: Page;
 }
@@ -22,9 +15,20 @@ interface HomeProps {
 export default function Home({ page }: HomeProps) {
     const { auth } = usePage<SharedData>().props;
 
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Home',
+            href: '/',
+        },
+        {
+            title: page?.title || 'Untitled Page',
+            href: '#',
+        },
+    ];
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title='Home' />
+            <Head title={page?.title || 'Untitled Page'} />
             <div className="flex h-full flex-1 rounded-xl p-4">
                 <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min">
                     <div className="mt-4 ms-4">
@@ -33,6 +37,16 @@ export default function Home({ page }: HomeProps) {
                             {page?.content ? (
                                 <BlockViewer blocks={JSON.parse(page.content)} />
                             ) : 'No Content Available'}
+                            {page && auth.user && (
+                                <div className="flex justify-center">
+                                    <Button variant="ghost" asChild>
+                                        <Link href={ route('pages.edit', {'page': page?.slug}) }>
+                                            Edit
+                                        </Link>
+                                    </Button>
+                                </div>
+                            )}
+
                             <br />
                             {!page && auth.user && ( // Check if user is logged in
                                 <Button variant="outline" asChild>
