@@ -1,8 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Page } from '@/types';
-import { Head, useForm, usePage } from '@inertiajs/react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Head, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { FormEventHandler } from 'react';
 import Editor from '@/components/editor';

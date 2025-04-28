@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type Page } from '@/types';
-import { Head, useForm, usePage } from '@inertiajs/react';
+import { type BreadcrumbItem } from '@/types';
+import { Head, useForm } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -14,16 +14,13 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-interface HomeProps {
-    page: Page;
-}
 
 type CreatePageForm = {
     title: string;
     content: string;
 };
 
-export default function Home({ page }: HomeProps) {
+export default function Home() {
     const queryParams = new URLSearchParams(window.location.search);
     const initialTitle = queryParams.get('title') || ''; // Extract title from query parameters
 
