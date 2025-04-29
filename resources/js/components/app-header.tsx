@@ -14,14 +14,8 @@ import { Link, usePage } from '@inertiajs/react';
 import { Menu } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
+import { Plus, House } from 'lucide-react';
 
-const mainNavItems: NavItem[] = [
-    // {
-    //     title: 'Home',
-    //     href: '/',
-    //     icon: LayoutGrid,
-    // },
-];
 
 const rightNavItems: NavItem[] = [
     // {
@@ -45,6 +39,24 @@ interface AppHeaderProps {
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: 'Home',
+            href: '/',
+            icon: House,
+        },
+        ...(auth.user
+            ? [
+                  {
+                      title: 'Create',
+                      href: '/pages/create',
+                      icon: Plus,
+                  },
+              ]
+            : []),
+    ];
+
     const getInitials = useInitials();
     return (
         <>
