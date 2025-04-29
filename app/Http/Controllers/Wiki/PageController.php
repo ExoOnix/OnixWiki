@@ -57,4 +57,8 @@ class PageController extends Controller
 
         return redirect()->route('pages.show', $page)->with('success', 'Page created successfully!');
     }
+    public function destroy(Request $request, Page $page) {
+        $page->delete();
+        return redirect()->route('home')->with('success', 'Your action was successful!');
+    }
 }

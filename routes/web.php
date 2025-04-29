@@ -14,6 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/', [PageController::class, 'store'])->name('pages.store');
         Route::get('/{page}/edit', [PageController::class, 'edit'])->name('pages.edit');
         Route::patch('{page}', [PageController::class, 'update'])->name('pages.update');
+        Route::delete('{page}', [PageController::class, 'destroy'])->name('pages.destroy');
     });
 });
 

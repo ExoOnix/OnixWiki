@@ -4,6 +4,7 @@ import { Head, usePage } from '@inertiajs/react'; // Import usePage from Inertia
 import { Button } from '@/components/ui/button';
 import { Link } from '@inertiajs/react';
 import BlockViewer from '@/components/block-viewer';
+import { router } from '@inertiajs/react'
 
 
 interface HomeProps {
@@ -39,10 +40,17 @@ export default function Home({ page }: HomeProps) {
                             ) : 'No Content Available'}
                             {page && auth.user && (
                                 <div className="flex justify-center">
-                                    <Button variant="ghost" asChild>
+                                    <Button className='mr-2' variant="default" asChild>
                                         <Link href={ route('pages.edit', {'page': page?.slug}) }>
                                             Edit
                                         </Link>
+                                    </Button>
+                                    <Button variant="destructive" onClick={() => {
+                                        if (confirm('Are you sure you want to delete this page?')) {
+                                            router.delete(route('pages.destroy', { 'page': page?.slug }));
+                                        }
+                                    }}>
+                                        Delete
                                     </Button>
                                 </div>
                             )}
