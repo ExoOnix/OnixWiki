@@ -42,5 +42,5 @@ export interface User {
     [key: string]: unknown; // This allows for additional properties...
 }
 
-export * from './models/page';
 export * from './editor/editor';
+export * from './models/page';

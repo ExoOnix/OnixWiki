@@ -1,13 +1,13 @@
-import { useEffect, useRef } from 'react';
-import { usePage } from '@inertiajs/react';
 import EditorJS from '@editorjs/editorjs';
+import { usePage } from '@inertiajs/react';
+import { useEffect, useRef } from 'react';
 
 // Extensions
-import Header from '@editorjs/header';
-import List from '@editorjs/list'
 import Delimiter from '@editorjs/delimiter';
-import ColorPicker from 'editorjs-color-picker';
+import Header from '@editorjs/header';
 import ImageTool from '@editorjs/image';
+import List from '@editorjs/list';
+import ColorPicker from 'editorjs-color-picker';
 
 export default function Editor({ value, onChange }) {
     const editorRef = useRef(null);
@@ -29,19 +29,19 @@ export default function Editor({ value, onChange }) {
                         class: ImageTool,
                         config: {
                             endpoints: {
-                                byFile: 'http://localhost/editor/image-file-upload',
-                                byUrl: 'http://localhost/editor/image-url-upload',
+                                byFile: '/editor/image-file-upload',
+                                byUrl: '/editor/image-url-upload',
                             },
                             additionalRequestHeaders: {
-                                "X-CSRF-TOKEN": props.csrf,
+                                'X-CSRF-TOKEN': props.csrf,
                             },
                             features: {
                                 border: false,
                                 stretch: false,
                                 background: false,
                                 caption: false,
-                            }
-                        }
+                            },
+                        },
                     },
                 },
                 data: value ? JSON.parse(value) : {},

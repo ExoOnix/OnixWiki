@@ -1,11 +1,11 @@
+import Editor from '@/components/editor';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, useForm } from '@inertiajs/react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
 import { FormEventHandler } from 'react';
-import Editor from '@/components/editor';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -13,7 +13,6 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/pages/create',
     },
 ];
-
 
 type CreatePageForm = {
     title: string;
@@ -36,11 +35,11 @@ export default function Home() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title='Create Page' />
+            <Head title="Create Page" />
             <div className="flex h-full flex-1 rounded-xl p-4">
                 <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min">
-                    <form className="mt-4 ms-auto me-auto w-[85%] space-y-4" onSubmit={submit}>
-                        <h1 className='text-4xl'>Editor</h1>
+                    <form className="ms-auto me-auto mt-4 w-[85%] space-y-4" onSubmit={submit}>
+                        <h1 className="text-4xl">Editor</h1>
 
                         <div>
                             <Label htmlFor="title" className="block text-sm font-medium">
@@ -55,7 +54,7 @@ export default function Home() {
                                 value={data.title}
                                 onChange={(e) => setData('title', e.target.value)}
                             />
-                            {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
+                            {errors.title && <p className="mt-1 text-sm text-red-500">{errors.title}</p>}
                         </div>
                         <div>
                             <Label htmlFor="content" className="block text-sm font-medium">
@@ -64,9 +63,9 @@ export default function Home() {
                             <div className="mt-1 w-full">
                                 <Editor value={data.content} onChange={(value: string) => setData('content', value)} />
                             </div>
-                            {errors.content && <p className="text-red-500 text-sm mt-1">{errors.content}</p>}
+                            {errors.content && <p className="mt-1 text-sm text-red-500">{errors.content}</p>}
                         </div>
-                        <Button className='mb-5' type="submit" disabled={processing}>
+                        <Button className="mb-5" type="submit" disabled={processing}>
                             {processing ? 'Creating...' : 'Create Page'}
                         </Button>
                     </form>
