@@ -2,9 +2,8 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Page, type SharedData } from '@/types';
 import { Head, usePage } from '@inertiajs/react'; // Import usePage from Inertia
 import { Button } from '@/components/ui/button';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import BlockViewer from '@/components/block-viewer';
-import { router } from '@inertiajs/react'
 
 
 interface HomeProps {
