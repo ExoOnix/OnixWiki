@@ -37,7 +37,7 @@ export default function BlockViewer({ blocks }: BlockViewerProps) {
             convertedHtml += "<hr class='viewer-content' />";
             break;
           case "image":
-            convertedHtml += `<img class="img-fluid class='viewer-content'" src="${block.data.file?.url}" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
+            convertedHtml += `<div class="flex justify-center px-4"><img class="img-fluid viewer-content mx-auto" src="${block.data.file?.url}" title="${block.data.caption}" /><br /><em>${block.data.caption}</em></div>`;
             break;
           default:
             console.log("Unknown block type", block.type);
