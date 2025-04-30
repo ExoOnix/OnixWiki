@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Laravel\Scout\Searchable;
 
 class Page extends Model
 {
-    use Sluggable, SluggableScopeHelpers;
+    use Sluggable, SluggableScopeHelpers, Searchable;
 
 
     protected $fillable = [
@@ -34,4 +35,12 @@ class Page extends Model
     {
         return 'slug';
     }
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'slug' => $this->slug,
+        ];
+    }
+
 }

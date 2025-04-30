@@ -3,9 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Wiki\PageController;
 use App\Http\Controllers\Editor\ImageUploadController;
+use App\Http\Controllers\Wiki\SearchController;
 
 // Public routes;
 Route::get('/', [PageController::class, 'home'])->name('home');
+
+Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 // Authenticated routes
 Route::middleware(['auth', 'verified'])->group(function () {
