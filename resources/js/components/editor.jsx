@@ -19,8 +19,14 @@ export default function Editor({ value, onChange }) {
                 holder: editorRef.current,
                 autofocus: true,
                 tools: {
-                    header: Header,
-                    list: List,
+                    header: {
+                        class: Header,
+                        inlineToolbar: true,
+                    },
+                    list: {
+                        class: List,
+                        inlineToolbar: true,
+                    },
                     delimiter: Delimiter,
                     ColorPicker: {
                         class: ColorPicker,
