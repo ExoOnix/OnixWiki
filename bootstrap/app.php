@@ -15,14 +15,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
-
-        $middleware->web(append: [
-            HandleAppearance::class,
-            HandleInertiaRequests::class,
-            AddLinkHeadersForPreloadedAssets::class,
-        ]);
-
         $middleware->trustProxies(at: '*', headers:
             Request::HEADER_X_FORWARDED_FOR |
             Request::HEADER_X_FORWARDED_HOST |
@@ -30,6 +22,14 @@ return Application::configure(basePath: dirname(__DIR__))
             Request::HEADER_X_FORWARDED_PROTO |
             Request::HEADER_X_FORWARDED_AWS_ELB
         );
+
+        $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
+
+        $middleware->web(append: [
+            HandleAppearance::class,
+            HandleInertiaRequests::class,
+            AddLinkHeadersForPreloadedAssets::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
