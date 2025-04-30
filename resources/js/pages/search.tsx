@@ -1,9 +1,8 @@
-import AppLayout from '@/layouts/app-layout';
-import { Head } from '@inertiajs/react';
 import { Input } from '@/components/ui/input';
-import { router, Link } from '@inertiajs/react';
-import { useState, useMemo } from 'react';
+import AppLayout from '@/layouts/app-layout';
+import { Head, Link, router } from '@inertiajs/react';
 import { debounce } from 'lodash';
+import { useMemo, useState } from 'react';
 
 interface SearchResult {
     slug: string;
@@ -29,9 +28,9 @@ export default function Home({ results }: HomeProps) {
     const debouncedSearch = useMemo(
         () =>
             debounce((value: string) => {
-                router.get(route('search', { search: value }), {}, { preserveState: true, preserveScroll: true, replace: true, });
+                router.get(route('search', { search: value }), {}, { preserveState: true, preserveScroll: true, replace: true });
             }, 300),
-        []
+        [],
     );
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -45,13 +44,11 @@ export default function Home({ results }: HomeProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Search" />
             <div className="flex h-full w-full flex-1 justify-center p-4">
-                <div className="w-full max-w-screen-md rounded-xl border border-sidebar-border/70 dark:border-sidebar-border bg-white dark:bg-gray-900 shadow-sm p-6">
+                <div className="border-sidebar-border/70 dark:border-sidebar-border w-full max-w-screen-md rounded-xl border bg-white p-6 shadow-sm dark:bg-gray-900">
                     <section>
-                        <h1 className="mb-6 text-3xl font-semibold text-gray-900 dark:text-white">
-                            Search Results
-                        </h1>
-                        <div className='mb-3'>
-                            <Input placeholder='Search...' onChange={handleSearch} value={text} />
+                        <h1 className="mb-6 text-3xl font-semibold text-gray-900 dark:text-white">Search Results</h1>
+                        <div className="mb-3">
+                            <Input placeholder="Search..." onChange={handleSearch} value={text} />
                         </div>
                         <div>
                             {results && results.length > 0 ? (
@@ -59,7 +56,7 @@ export default function Home({ results }: HomeProps) {
                                     {results.map((result: SearchResult, index: number) => (
                                         <li
                                             key={index}
-                                            className="rounded-lg bg-gray-50 dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-700"
+                                            className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800"
                                         >
                                             <Link
                                                 href={route('pages.show', { page: result.slug })}
@@ -71,9 +68,7 @@ export default function Home({ results }: HomeProps) {
                                     ))}
                                 </ul>
                             ) : (
-                                <p className="text-gray-500 dark:text-gray-400">
-                                    No results found.
-                                </p>
+                                <p className="text-gray-500 dark:text-gray-400">No results found.</p>
                             )}
                         </div>
                     </section>
