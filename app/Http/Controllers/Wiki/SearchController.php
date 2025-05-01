@@ -19,4 +19,12 @@ class SearchController extends Controller
             'results' => $pages,
         ]);
     }
+
+    public function suggestions(Request $request) {
+        $titles = Page::search($request->search)->take(5)->get()->pluck('title');
+
+        return response()->json([
+            'suggestions' => $titles,
+        ]);
+    }
 }

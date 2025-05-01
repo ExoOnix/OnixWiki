@@ -9,6 +9,7 @@ use App\Http\Controllers\Wiki\SearchController;
 Route::get('/', [PageController::class, 'home'])->name('home');
 
 Route::get('/search', [SearchController::class, 'search'])->name('search');
+Route::get('/search/suggestions', [SearchController::class, 'suggestions'])->name('search.suggestions');
 
 // Authenticated routes
 Route::middleware(['auth', 'verified'])->group(function () {
