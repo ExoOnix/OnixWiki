@@ -20,11 +20,16 @@ import { router } from '@inertiajs/react';
 import axios from "axios";
 import { debounce } from "lodash";
 
+interface Suggestion {
+    title: string;
+    slug: string;
+}
+
 export function AppSearch() {
     const isMobile = useIsMobile()
     const [open, setOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("")
-    const [suggestions, setSuggestions] = useState<string[]>([]);
+    const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
 
     const searchPage = (e: React.FormEvent) => {
         e.preventDefault()
@@ -54,9 +59,9 @@ export function AppSearch() {
             <div>
                 <Popover open={open} onOpenChange={setOpen}>
                     <PopoverTrigger>
-                        <Search className="!size-5 opacity-80 group-hover:opacity-100" />
+                        <Search className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
                     </PopoverTrigger>
-                    <PopoverContent>
+                    <PopoverContent className="w-80 p-4 bg-background border border-border rounded-md shadow-md">
                         <form onSubmit={searchPage}>
                             <Input
                                 placeholder="Search..."
@@ -65,10 +70,10 @@ export function AppSearch() {
                                 onChange={(e) => setSearchTerm(e.target.value)}
                              />
                             {suggestions.length > 0 && (
-                                <ul className="mt-2 bg-white border rounded shadow">
+                                <ul className="mt-2 bg-background border border-border rounded-md shadow-md">
                                     {suggestions.map((suggestion, index) => (
-                                        <li key={index} className="p-2 hover:bg-gray-100 cursor-pointer" onClick={() => setSearchTerm(suggestion)}>
-                                            {suggestion}
+                                        <li key={index} className="p-2 hover:bg-accent hover:text-accent-foreground cursor-pointer" onClick={() => router.get(route("pages.show", {page: suggestion.slug}))}>
+                                            {suggestion.title}
                                         </li>
                                     ))}
                                 </ul>
@@ -83,13 +88,13 @@ export function AppSearch() {
         <div>
             <Drawer open={open} onOpenChange={setOpen}>
                 <DrawerTrigger>
-                    <Search className="!size-5 opacity-80 group-hover:opacity-100" />
+                    <Search className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
                 </DrawerTrigger>
-                <DrawerContent>
+                <DrawerContent className="p-4 bg-background border border-border rounded-md shadow-md">
                     <DrawerHeader>
-                        <DrawerTitle>Search</DrawerTitle>
+                        <DrawerTitle className="text-lg font-semibold text-foreground">Search</DrawerTitle>
                     </DrawerHeader>
-                    <DrawerFooter>
+                    <DrawerFooter className="flex flex-col gap-4">
                         <Input
                             placeholder="Search..."
                             className="w-full"
@@ -97,10 +102,10 @@ export function AppSearch() {
                             onChange={(e) => setSearchTerm(e.target.value)}
                         />
                         {suggestions.length > 0 && (
-                            <ul className="mt-2 bg-white border rounded shadow">
+                            <ul className="mt-2 bg-background border border-border rounded-md shadow-md">
                                 {suggestions.map((suggestion, index) => (
-                                    <li key={index} className="p-2 hover:bg-gray-100 cursor-pointer" onClick={() => setSearchTerm(suggestion)}>
-                                        {suggestion}
+                                    <li key={index} className="p-2 hover:bg-accent hover:text-accent-foreground cursor-pointer" onClick={() => router.get(route("pages.show", { page: suggestion.slug }))}>
+                                        {suggestion.title}
                                     </li>
                                 ))}
                             </ul>

@@ -21,10 +21,18 @@ class SearchController extends Controller
     }
 
     public function suggestions(Request $request) {
-        $titles = Page::search($request->search)->take(5)->get()->pluck('title');
+        $suggestions = Page::search($request->search)
+            ->take(5)
+            ->get(['title', 'slug'])
+            ->map(function ($page) {
+                return [
+                    'title' => $page->title,
+                    'slug' => $page->slug,
+                ];
+            });
 
         return response()->json([
-            'suggestions' => $titles,
+            'suggestions' => $suggestions,
         ]);
     }
 }
