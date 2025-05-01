@@ -95,12 +95,6 @@ export function AppSearch() {
                         <DrawerTitle className="text-lg font-semibold text-foreground">Search</DrawerTitle>
                     </DrawerHeader>
                     <DrawerFooter className="flex flex-col gap-4">
-                        <Input
-                            placeholder="Search..."
-                            className="w-full"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
                         {suggestions.length > 0 && (
                             <ul className="mt-2 bg-background border border-border rounded-md shadow-md">
                                 {suggestions.map((suggestion, index) => (
@@ -110,6 +104,12 @@ export function AppSearch() {
                                 ))}
                             </ul>
                         )}
+                        <Input
+                            placeholder="Search..."
+                            className="w-full"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
                         <Button onClick={searchPage}>Submit</Button>
                     </DrawerFooter>
                 </DrawerContent>
