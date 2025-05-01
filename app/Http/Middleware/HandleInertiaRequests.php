@@ -45,6 +45,9 @@ class HandleInertiaRequests extends Middleware
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
+                'can' => [
+                    'create-pages' => $request->user()?->can('create pages'),
+                ],
             ],
             'ziggy' => fn (): array => [
                 ...(new Ziggy)->toArray(),

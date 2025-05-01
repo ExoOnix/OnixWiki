@@ -15,6 +15,7 @@ import { House, Menu, Plus } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 import { AppSearch } from '@/components/app-search';
+import { type Auth } from '@/types';
 
 const rightNavItems: NavItem[] = [
     // {
@@ -36,7 +37,7 @@ interface AppHeaderProps {
 }
 
 export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
-    const page = usePage<SharedData>();
+    const page = usePage<SharedData & { auth: Auth }>();
     const { auth } = page.props;
 
     const mainNavItems: NavItem[] = [
@@ -45,7 +46,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
             href: '/',
             icon: House,
         },
-        ...(auth.user
+        ...(auth.can['create-pages']
             ? [
                   {
                       title: 'Create',

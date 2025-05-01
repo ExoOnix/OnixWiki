@@ -21,12 +21,20 @@ class PageController extends Controller
         }
         return Inertia::render('home');
     }
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->user()->cannot('create pages')) {
+            abort(403);
+        }
+
         return Inertia::render('pages/create');
     }
     public function store(Request $request)
     {
+        if ($request->user()->cannot('create pages')) {
+            abort(403);
+        }
+
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
@@ -36,19 +44,35 @@ class PageController extends Controller
 
         return redirect()->route('pages.show', $page)->with('success', 'Page created successfully!');
     }
-    public function show(Page $page)
+    public function show(Request $request, Page $page)
     {
         return Inertia::render('pages/show', [
             'page' => $page,
+            'auth' => [
+                'user' => $request->user(),
+                'can' => [
+                    'edit-pages' => $request->user()?->can('update', $page),
+                    'delete-pages' => $request->user()?->can('delete', $page),
+                    'create-pages' => $request->user()?->can('create pages'),
+                ],
+            ],
         ]);
     }
-    public function edit(Page $page)
+    public function edit(Request $request, Page $page)
     {
+        if ($request->user()->cannot('update', $page)) {
+            abort(403);
+        }
+
         return Inertia::render('pages/edit', [
             'page' => $page,
         ]);
     }
     public function update(Request $request, Page $page) {
+        if ($request->user()->cannot('update', $page)) {
+            abort(403);
+        }
+
         $validated = $request->validate([
             'content' => 'required|string',
         ]);
@@ -58,6 +82,10 @@ class PageController extends Controller
         return redirect()->route('pages.show', $page)->with('success', 'Page created successfully!');
     }
     public function destroy(Request $request, Page $page) {
+        if ($request->user()->cannot('delete', $page)) {
+            abort(403);
+        }
+
         $page->delete();
         return redirect()->route('home')->with('success', 'Your action was successful!');
     }

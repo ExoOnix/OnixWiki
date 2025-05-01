@@ -29,7 +29,7 @@ export default function Home({ page }: HomeProps) {
                             {page?.content ? <BlockViewer blocks={JSON.parse(page.content)} /> : 'No Content Available'}
                             <br />
                             {!page &&
-                                auth.user && ( // Check if user is logged in
+                                auth.can['create-pages'] && ( // Check if user is logged in
                                     <Button variant="outline" asChild>
                                         <Link href={route('pages.create', { title: 'Home' })}>Create Page</Link>
                                     </Button>

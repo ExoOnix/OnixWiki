@@ -1,15 +1,23 @@
 import BlockViewer from '@/components/block-viewer';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type Page, type SharedData } from '@/types';
+import { type BreadcrumbItem, type Page, type SharedData, type Auth as BaseAuth } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react'; // Import usePage from Inertia
 
 interface HomeProps {
     page: Page;
 }
 
+interface Auth extends BaseAuth {
+    can: {
+        'edit-pages': boolean;
+        'create-pages': boolean;
+        'delete-pages': boolean;
+    };
+}
+
 export default function Home({ page }: HomeProps) {
-    const { auth } = usePage<SharedData>().props;
+    const { auth } = usePage<SharedData & { auth: Auth }>().props;
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -31,27 +39,29 @@ export default function Home({ page }: HomeProps) {
                         <h1 className="mb-4 text-5xl">{page?.title || 'No Title Available'}</h1>
                         <div>
                             {page?.content ? <BlockViewer blocks={JSON.parse(page.content)} /> : 'No Content Available'}
-                            {page && auth.user && (
                                 <div className="flex justify-center">
-                                    <Button className="mr-2" variant="default" asChild>
-                                        <Link href={route('pages.edit', { page: page?.slug })}>Edit</Link>
-                                    </Button>
-                                    <Button
-                                        variant="destructive"
-                                        onClick={() => {
-                                            if (confirm('Are you sure you want to delete this page?')) {
-                                                router.delete(route('pages.destroy', { page: page?.slug }));
-                                            }
-                                        }}
-                                    >
-                                        Delete
-                                    </Button>
+                                    {page && auth.can['edit-pages'] && (
+                                        <Button className="mr-2" variant="default" asChild>
+                                            <Link href={route('pages.edit', { page: page?.slug })}>Edit</Link>
+                                        </Button>
+                                    )}
+                                    {page && auth.can['delete-pages'] && (
+                                        <Button
+                                            variant="destructive"
+                                            onClick={() => {
+                                                if (confirm('Are you sure you want to delete this page?')) {
+                                                    router.delete(route('pages.destroy', { page: page?.slug }));
+                                                }
+                                            }}
+                                        >
+                                            Delete
+                                        </Button>
+                                    )}
                                 </div>
-                            )}
 
                             <br />
                             {!page &&
-                                auth.user && ( // Check if user is logged in
+                                auth.can['create-pages'] && (
                                     <Button variant="outline" asChild>
                                         <Link href={route('create.page', { title: 'Home' })}>Create Page</Link>
                                     </Button>

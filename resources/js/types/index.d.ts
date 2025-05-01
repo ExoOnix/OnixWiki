@@ -3,6 +3,11 @@ import type { Config } from 'ziggy-js';
 
 export interface Auth {
     user: User;
+    can: Can
+}
+
+export interface Can {
+    'create-pages': boolean;
 }
 
 export interface BreadcrumbItem {
