@@ -86,7 +86,7 @@ export function AppSearch() {
     }
     return (
         <div>
-            <Drawer open={open} onOpenChange={setOpen}>
+            <Drawer open={open} onOpenChange={setOpen} repositionInputs={false}>
                 <DrawerTrigger>
                     <Search className="h-5 w-5 text-muted-foreground group-hover:text-foreground" />
                 </DrawerTrigger>
