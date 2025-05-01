@@ -21,6 +21,12 @@ class SearchController extends Controller
     }
 
     public function suggestions(Request $request) {
+        if (!$request->has('search') || empty($request->search)) {
+            return response()->json([
+                'suggestions' => [],
+            ]);
+        }
+
         $suggestions = Page::search($request->search)
             ->take(5)
             ->get(['title', 'slug'])

@@ -37,20 +37,31 @@ export function AppSearch() {
     }
 
     useEffect(() => {
+        const controller = new AbortController();
         const fetchSuggestions = debounce((term: string) => {
             if (term) {
-                axios.get(route("search.suggestions", { search: term }))
+                axios.get(route("search.suggestions", { search: term }), { signal: controller.signal })
                     .then((response) => setSuggestions(response.data.suggestions))
-                    .catch(() => setSuggestions([]));
-            } else {
-                setSuggestions([]);
+                    .catch((error) => {
+                        if (axios.isCancel(error)) {
+                            console.log("Request canceled");
+                        } else {
+                            setSuggestions([]);
+                        }
+                    });
             }
         }, 100);
 
-        fetchSuggestions(searchTerm);
+        if (!searchTerm) {
+            setSuggestions([]);
+            controller.abort();
+        } else {
+            fetchSuggestions(searchTerm);
+        }
 
         return () => {
             fetchSuggestions.cancel();
+            controller.abort();
         };
     }, [searchTerm]);
 
