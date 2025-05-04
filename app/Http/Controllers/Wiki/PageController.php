@@ -23,7 +23,7 @@ class PageController extends Controller
     }
     public function create(Request $request)
     {
-        if ($request->user()->cannot('create pages')) {
+        if ($request->user()->cannot('create', Page::class)) {
             abort(403);
         }
 
@@ -31,7 +31,7 @@ class PageController extends Controller
     }
     public function store(Request $request)
     {
-        if ($request->user()->cannot('create pages')) {
+        if ($request->user()->cannot('create', Page::class)) {
             abort(403);
         }
 
@@ -53,7 +53,7 @@ class PageController extends Controller
                 'can' => [
                     'edit-pages' => $request->user()?->can('update', $page),
                     'delete-pages' => $request->user()?->can('delete', $page),
-                    'create-pages' => $request->user()?->can('create pages'),
+                    'create-pages' => $request->user()?->can('create', Page::class),
                 ],
             ],
         ]);

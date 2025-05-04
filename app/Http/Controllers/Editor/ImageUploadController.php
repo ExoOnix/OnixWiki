@@ -8,17 +8,12 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
+use App\Models\Page;
+
 class ImageUploadController extends Controller
 {
     public function storeByFile(Request $request)
     {
-        if (
-            $request->user()->cannot('edit pages') &&
-            $request->user()->cannot('create pages')
-        ) {
-            abort(403);
-        }
-
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -36,13 +31,6 @@ class ImageUploadController extends Controller
     }
     public function storeByUrl(Request $request)
     {
-        if (
-            $request->user()->cannot('edit pages') &&
-            $request->user()->cannot('create pages')
-        ) {
-            abort(403);
-        }
-
         $request->validate([
             'url' => 'required|url',
         ]);

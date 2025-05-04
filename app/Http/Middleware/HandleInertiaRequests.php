@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
+use App\Models\Page;
+
 class HandleInertiaRequests extends Middleware
 {
     /**
@@ -46,7 +48,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
                 'can' => [
-                    'create-pages' => $request->user()?->can('create pages'),
+                    'create-pages' => $request->user()?->can('create', Page::class),
                 ],
             ],
             'ziggy' => fn (): array => [
