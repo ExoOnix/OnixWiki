@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Wiki\PageController;
 use App\Http\Controllers\Editor\ImageUploadController;
 use App\Http\Controllers\Wiki\SearchController;
-
+use App\Http\Controllers\Admin\AdminController;
 // Public routes;
 Route::get('/', [PageController::class, 'home'])->name('home');
 
@@ -26,6 +26,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('editor')->group(function () {
         Route::post('image-file-upload', [ImageUploadController::class, 'storeByFile'])->name('editor.storeByFile');
         Route::post('image-url-upload', [ImageUploadController::class, 'storeByUrl'])->name('editor.storeByUrl');
+    });
+
+    // Admin routes
+    Route::middleware('can:access-admin')->prefix('admin')->group(function () {
+        Route::get('/', [AdminController::class, 'index'])->name('admin.index');
     });
 });
 

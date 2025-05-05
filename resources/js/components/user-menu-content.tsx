@@ -31,7 +31,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
             <DropdownMenuGroup>
                 {auth.can['access-admin'] && (
                     <DropdownMenuItem asChild>
-                        <Link className="block w-full" href={route('profile.edit')} as="button" prefetch onClick={cleanup}>
+                        <Link className="block w-full" href={route('admin.index')} as="button" prefetch onClick={cleanup}>
                             <Lock className="mr-2" />
                             Admin
                         </Link>
