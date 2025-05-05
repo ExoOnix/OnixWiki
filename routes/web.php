@@ -29,7 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Admin routes
-    Route::middleware('can:access-admin')->prefix('admin')->group(function () {
+    Route::middleware('can:admin.access')->prefix('admin')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('admin.index');
     });
 });

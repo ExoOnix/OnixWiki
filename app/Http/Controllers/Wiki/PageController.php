@@ -54,7 +54,7 @@ class PageController extends Controller
                     'edit-pages' => $request->user()?->can('update', $page),
                     'delete-pages' => $request->user()?->can('delete', $page),
                     'create-pages' => $request->user()?->can('create', Page::class),
-                    'access-admin' => $request->user()?->can('access-admin'),
+                    'admin.access' => $request->user()?->can('admin.access'),
                 ],
             ],
         ]);

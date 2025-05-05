@@ -29,7 +29,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-                {auth.can['access-admin'] && (
+                {auth.can['admin.access'] && (
                     <DropdownMenuItem asChild>
                         <Link className="block w-full" href={route('admin.index')} as="button" prefetch onClick={cleanup}>
                             <Lock className="mr-2" />
