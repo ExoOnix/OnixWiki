@@ -8,8 +8,8 @@ import { type PropsWithChildren } from 'react';
 
 const sidebarNavItems: NavItem[] = [
     {
-        title: 'Roles',
-        href: '/admin/role',
+        title: 'Users',
+        href: '/admin/user',
         icon: null,
     },
 ];
@@ -49,8 +49,8 @@ export default function AdminLayout({ children }: PropsWithChildren) {
 
                 <Separator className="my-6 md:hidden" />
 
-                <div className="flex-1 md:max-w-2xl">
-                    <section className="max-w-xl space-y-12">{children}</section>
+                <div className="w-full">
+                    <section className="space-y-12">{children}</section>
                 </div>
             </div>
         </div>
