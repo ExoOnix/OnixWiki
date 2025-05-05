@@ -4,8 +4,8 @@ import { Head } from '@inertiajs/react'; // Import usePage from Inertia
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Home',
-        href: '/',
+        title: 'Admin',
+        href: '/admin',
     },
 ];
 
