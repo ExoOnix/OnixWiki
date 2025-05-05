@@ -1,20 +1,11 @@
 import BlockViewer from '@/components/block-viewer';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type Page, type SharedData, type Auth as BaseAuth } from '@/types';
+import { type BreadcrumbItem, type Page, type SharedData, type Auth } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react'; // Import usePage from Inertia
 
 interface HomeProps {
     page: Page;
-}
-
-interface Auth extends BaseAuth {
-    can: {
-        'edit-pages': boolean;
-        'access-admin': boolean;
-        'create-pages': boolean;
-        'delete-pages': boolean;
-    };
 }
 
 export default function Home({ page }: HomeProps) {
