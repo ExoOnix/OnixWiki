@@ -19,7 +19,7 @@ class BouncerSeeder extends Seeder
 
         Bouncer::allow('admin')->everything();
         Bouncer::forbid('admin')->toManage(User::class);
-        Bouncer::forbid('admin')->to('admin.access');
+        Bouncer::forbid('admin')->to('roles.view');
 
         Bouncer::allow('writer')->toManage(Page::class);
     }

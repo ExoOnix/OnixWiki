@@ -8,10 +8,10 @@ use Inertia\Inertia;
 
 
 
-class AdminController extends Controller
+class RoleController extends Controller
 {
     public function index()
     {
-        return Inertia::render('admin/index');
+        return Inertia::render('admin/role');
     }
 }

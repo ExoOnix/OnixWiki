@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Wiki\PageController;
 use App\Http\Controllers\Editor\ImageUploadController;
 use App\Http\Controllers\Wiki\SearchController;
-use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\RoleController;
 // Public routes;
 Route::get('/', [PageController::class, 'home'])->name('home');
 
@@ -29,8 +29,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Admin routes
-    Route::middleware('can:admin.access')->prefix('admin')->group(function () {
-        Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+    Route::middleware('can:roles.view')->prefix('admin')->group(function () {
+        Route::get('/role', [RoleController::class, 'index'])->name('admin.role');
     });
 });
 

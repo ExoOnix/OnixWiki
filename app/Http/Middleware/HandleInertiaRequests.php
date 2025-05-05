@@ -49,7 +49,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'can' => [
                     'create-pages' => $request->user()?->can('create', Page::class),
-                    'admin.access' => $request->user()?->can('admin.access'),
+                    'roles.view' => $request->user()?->can('roles.view'),
                 ],
             ],
             'ziggy' => fn (): array => [
