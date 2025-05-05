@@ -15,7 +15,12 @@ class BouncerSeeder extends Seeder
      */
     public function run(): void
     {
+        Bouncer::allow('superadmin')->everything();
+
         Bouncer::allow('admin')->everything();
+        Bouncer::forbid('admin')->toManage(User::class);
+        Bouncer::forbid('admin')->to('access-admin');
+
         Bouncer::allow('writer')->toManage(Page::class);
     }
 }

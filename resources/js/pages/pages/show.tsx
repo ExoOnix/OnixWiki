@@ -11,6 +11,7 @@ interface HomeProps {
 interface Auth extends BaseAuth {
     can: {
         'edit-pages': boolean;
+        'access-admin': boolean;
         'create-pages': boolean;
         'delete-pages': boolean;
     };

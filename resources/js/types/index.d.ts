@@ -8,6 +8,7 @@ export interface Auth {
 
 export interface Can {
     'create-pages': boolean;
+    'access-admin': boolean;
 }
 
 export interface BreadcrumbItem {
