@@ -19,4 +19,12 @@ class UserController extends Controller
             'users' => $users, // Pass users to the view
         ]);
     }
+    public function destroy(Request $request, User $user) {
+        if ($request->user()->cannot('delete', $user)) {
+            abort(403);
+        }
+
+        $user->delete();
+        return redirect()->back()->with('success', 'Your action was successful!');
+    }
 }

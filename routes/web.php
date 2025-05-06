@@ -29,8 +29,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     // Admin routes
-    Route::middleware('can:users.view')->prefix('admin')->group(function () {
-        Route::get('/user', [UserController::class, 'index'])->name('admin.role');
+    Route::prefix('admin')->group(function () {
+        Route::prefix('user')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->middleware('can:users.view')->name('admin.users.index');
+            Route::delete('{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+        });
     });
 });
 
