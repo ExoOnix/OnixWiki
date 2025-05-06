@@ -11,8 +11,8 @@ import { DataTable } from "./data-table"
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Role Admin',
-        href: '/admin/role',
+        title: 'User Admin',
+        href: '/admin/user',
     },
 ];
 
