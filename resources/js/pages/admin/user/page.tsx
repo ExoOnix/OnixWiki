@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type User } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, router, usePage } from '@inertiajs/react';
 import type { PageProps as InertiaPageProps } from '@inertiajs/core';
 
 import AdminLayout from '@/layouts/admin/layout';
@@ -17,12 +17,22 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 interface PageProps extends InertiaPageProps {
-    users: User[]; // Define the type of users
+    users: {
+        data: User[];
+        current_page: number;
+        last_page: number;
+        per_page: number;
+        total: number;
+    };
 }
 
 export default function User() {
-    const { props } = usePage<PageProps>(); // Use the PageProps interface
-    const data: User[] = props.users;
+    const { props } = usePage<PageProps>();
+    const { data, current_page, last_page } = props.users;
+
+    const handlePageChange = (page: number) => {
+        router.get(window.location.pathname, { page }, { preserveState: true, preserveScroll: true });
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -32,7 +42,12 @@ export default function User() {
                 <div className="space-y-6">
                     <HeadingSmall title="Users" description="Manage Users" />
                     <div className="w-full">
-                        <DataTable columns={columns} data={data} />
+                        <DataTable
+                            columns={columns}
+                            data={data}
+                            pagination={{ current_page, last_page }}
+                            onPageChange={handlePageChange}
+                        />
                     </div>
                 </div>
             </AdminLayout>
