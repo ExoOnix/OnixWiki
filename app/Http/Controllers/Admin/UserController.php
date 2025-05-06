@@ -13,7 +13,7 @@ class UserController extends Controller
     {
         $users = User::select('id', 'name', 'email', 'created_at')
             ->orderBy('created_at', 'desc')
-            ->paginate(14);
+            ->paginate(10);
 
         return Inertia::render('admin/user/page', [
             'users' => $users, // Pass users to the view
