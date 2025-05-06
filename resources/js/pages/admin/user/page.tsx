@@ -1,11 +1,12 @@
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react'; // Import usePage from Inertia
+import { type BreadcrumbItem, type User } from '@/types';
+import { Head, usePage } from '@inertiajs/react';
+import type { PageProps as InertiaPageProps } from '@inertiajs/core';
 
 import AdminLayout from '@/layouts/admin/layout';
 import HeadingSmall from '@/components/heading-small';
 
-import { Payment, columns } from "./columns"
+import { columns } from "./columns"
 import { DataTable } from "./data-table"
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -15,21 +16,13 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-function getData(): Payment[] {
-    // Fetch data from your API here.
-    return [
-        {
-            id: "728ed52f",
-            amount: 100,
-            status: "pending",
-            email: "m@example.com",
-        },
-        // ...
-    ]
+interface PageProps extends InertiaPageProps {
+    users: User[]; // Define the type of users
 }
 
 export default function User() {
-    const data = getData()
+    const { props } = usePage<PageProps>(); // Use the PageProps interface
+    const data: User[] = props.users;
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
