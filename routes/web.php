@@ -34,6 +34,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::prefix('user')->group(function () {
             Route::get('/', [UserController::class, 'index'])->middleware('can:users.view')->name('admin.users.index');
             Route::delete('{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+
+            // Assign Role
+            Route::post('{user}/assign-role', [UserController::class, 'assignRole'])->middleware('can:users.assignRole')->name('admin.users.assignRole');
         });
     });
 });

@@ -47,5 +47,14 @@ export interface User {
     [key: string]: unknown; // This allows for additional properties...
 }
 
+export interface Role {
+    id: number;
+    name: string;
+    title: string;
+    scope: string | null;
+    created_at: string; // ISO 8601 date string
+    updated_at: string; // ISO 8601 date string
+}
+
 export * from './editor/editor';
 export * from './models/page';

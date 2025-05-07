@@ -12,7 +12,9 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { router } from "@inertiajs/react"
+import { router, usePage } from "@inertiajs/react"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 export const columns: ColumnDef<User>[] = [
     {
@@ -27,8 +29,8 @@ export const columns: ColumnDef<User>[] = [
         accessorKey: "roles",
         header: "Roles",
         cell: ({ row }) => {
-            const roles: { name: string }[] = row.original.roles;
-            return roles && roles.length > 0
+            const roles = Array.isArray(row.original.roles) ? row.original.roles : []; // Ensure roles is an array
+            return roles.length > 0
                 ? roles.map((role) => role.name).join(", ")
                 : "No roles assigned";
         },
@@ -52,6 +54,13 @@ export const columns: ColumnDef<User>[] = [
         id: "actions",
         cell: ({ row }) => {
             const user: User = row.original;
+            const { props } = usePage<{ roles: { id: number; name: string }[] }>();
+            const roles = props.roles;
+
+            // Ensure roles is an array and get the user's current role or default to "No Roles"
+            const userRole = Array.isArray(user.roles) && user.roles.length > 0
+                ? user.roles[0].name
+                : "No Roles";
 
             return (
                 <DropdownMenu>
@@ -68,6 +77,26 @@ export const columns: ColumnDef<User>[] = [
                         >
                             Copy user ID
                         </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <RadioGroup
+                            className="my-3"
+                            defaultValue={userRole}
+                            onValueChange={(selectedRole) => {
+                                const selectedRoleId = roles.find((role) => role.name === selectedRole)?.id || null;
+                                router.post(route('admin.users.assignRole', { user: user.id, role_id: selectedRoleId }), { preserveState: true, preserveScroll: true })
+                            }}
+                        >
+                            {roles.map((role) => (
+                                <div key={role.id} className="flex items-center space-x-2">
+                                    <RadioGroupItem value={role.name} id={`role-${role.id}`} />
+                                    <Label htmlFor={`role-${role.id}`}>{role.name}</Label>
+                                </div>
+                            ))}
+                            <div className="flex items-center space-x-2">
+                                <RadioGroupItem value="No Roles" id="no-roles" />
+                                <Label htmlFor="no-roles">No Roles</Label>
+                            </div>
+                        </RadioGroup>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem variant="destructive"
                             onClick={() => router.delete(route('admin.users.destroy', { user: user.id }), { preserveState: true, preserveScroll: true })}

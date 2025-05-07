@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia; // Import the User model
+use Silber\Bouncer\Database\Role;
+
+use Bouncer;
 
 class UserController extends Controller
 {
@@ -15,9 +18,11 @@ class UserController extends Controller
             ->with('roles:name') // Include roles with only the name field
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+        $roles = Role::all();
 
         return Inertia::render('admin/user/page', [
-            'users' => $users, // Pass users to the view
+            'users' => $users,
+            'roles' => $roles,
         ]);
     }
 
@@ -28,6 +33,24 @@ class UserController extends Controller
         }
 
         $user->delete();
+
+        return redirect()->back()->with('success', 'Your action was successful!');
+    }
+    public function assignRole(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'role_id' => 'nullable|exists:roles,id',
+        ]);
+
+        $roleId = $validated['role_id'] ?? null; // Ensure role_id exists
+
+        if (is_null($roleId)) {
+            Bouncer::sync($user)->roles([]);
+        } else {
+            $role = Role::findOrFail($roleId);
+            Bouncer::sync($user)->roles([$role]);
+        }
+
 
         return redirect()->back()->with('success', 'Your action was successful!');
     }
