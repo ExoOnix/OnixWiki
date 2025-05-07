@@ -2,28 +2,39 @@ import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
-import { type NavItem } from '@/types';
+import { type NavItem, type SharedData, type Auth } from '@/types';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
+import { usePage } from '@inertiajs/react';
 
-const sidebarNavItems: NavItem[] = [
-    {
-        title: 'Users',
-        href: '/admin/users',
-        icon: null,
-    },
-    {
-        title: 'Roles',
-        href: '/admin/roles',
-        icon: null,
-    },
-];
 
 export default function AdminLayout({ children }: PropsWithChildren) {
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {
         return null;
     }
+    const { auth } = usePage<SharedData & { auth: Auth }>().props;
+
+    const sidebarNavItems: NavItem[] = [
+        ...(auth.can['users.view']
+            ? [
+                  {
+                      title: 'Users',
+                      href: '/admin/users',
+                      icon: null,
+                  },
+              ]
+            : []),
+        ...(auth.can['roles.view']
+            ? [
+                  {
+                      title: 'Roles',
+                      href: '/admin/roles',
+                      icon: null,
+                  },
+              ]
+            : []),
+    ];
 
     const currentPath = window.location.pathname;
 

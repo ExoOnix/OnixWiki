@@ -29,14 +29,21 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-                {auth.can['users.view'] && (
+                {auth.can['users.view'] ? (
                     <DropdownMenuItem asChild>
                         <Link className="block w-full" href={route('admin.users.index')} as="button" prefetch onClick={cleanup}>
                             <Lock className="mr-2" />
                             Admin
                         </Link>
                     </DropdownMenuItem>
-                )}
+                ) : auth.can['roles.view'] ? (
+                    <DropdownMenuItem asChild>
+                        <Link className="block w-full" href={route('admin.roles.index')} as="button" prefetch onClick={cleanup}>
+                            <Lock className="mr-2" />
+                            Admin
+                        </Link>
+                    </DropdownMenuItem>
+                ) : null}
                 <DropdownMenuItem asChild>
                     <Link className="block w-full" href={route('profile.edit')} as="button" prefetch onClick={cleanup}>
                         <Settings className="mr-2" />
