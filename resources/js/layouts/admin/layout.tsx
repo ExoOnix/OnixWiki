@@ -9,7 +9,7 @@ import { type PropsWithChildren } from 'react';
 const sidebarNavItems: NavItem[] = [
     {
         title: 'Users',
-        href: '/admin/user',
+        href: '/admin/users',
         icon: null,
     },
 ];

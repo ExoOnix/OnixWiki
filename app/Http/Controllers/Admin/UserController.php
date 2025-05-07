@@ -20,7 +20,7 @@ class UserController extends Controller
             ->paginate(10);
         $roles = Role::all();
 
-        return Inertia::render('admin/user/page', [
+        return Inertia::render('admin/users/page', [
             'users' => $users,
             'roles' => $roles,
         ]);

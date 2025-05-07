@@ -31,7 +31,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Admin routes
     Route::prefix('admin')->group(function () {
-        Route::prefix('user')->group(function () {
+        Route::prefix('users')->group(function () {
             Route::get('/', [UserController::class, 'index'])->middleware('can:users.view')->name('admin.users.index');
             Route::delete('{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
