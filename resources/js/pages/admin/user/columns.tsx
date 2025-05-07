@@ -24,13 +24,34 @@ export const columns: ColumnDef<User>[] = [
         header: "Email",
     },
     {
+        accessorKey: "roles",
+        header: "Roles",
+        cell: ({ row }) => {
+            const roles: { name: string }[] = row.original.roles;
+            return roles && roles.length > 0
+                ? roles.map((role) => role.name).join(", ")
+                : "No roles assigned";
+        },
+    },
+    {
         accessorKey: "created_at",
         header: "Created At",
+        cell: ({ row }) => {
+            const createdAt: string = row.original.created_at;
+            const date = new Date(createdAt);
+            return new Intl.DateTimeFormat("en-US", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "numeric",
+                minute: "2-digit",
+            }).format(date);
+        },
     },
     {
         id: "actions",
         cell: ({ row }) => {
-            const user: User = row.original
+            const user: User = row.original;
 
             return (
                 <DropdownMenu>
@@ -53,7 +74,7 @@ export const columns: ColumnDef<User>[] = [
                         >Delete user</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-            )
+            );
         },
     },
 ]

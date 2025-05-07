@@ -3,16 +3,15 @@
 namespace App\Http\Controllers\Wiki;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-
-// Models
 use App\Models\Page;
-
+use Illuminate\Http\Request;
+// Models
+use Inertia\Inertia;
 
 class SearchController extends Controller
 {
-    public function search(Request $request) {
+    public function search(Request $request)
+    {
         $pages = Page::search($request->search)->take(15)->get();
 
         return Inertia::render('search', [
@@ -20,8 +19,9 @@ class SearchController extends Controller
         ]);
     }
 
-    public function suggestions(Request $request) {
-        if (!$request->has('search') || empty($request->search)) {
+    public function suggestions(Request $request)
+    {
+        if (! $request->has('search') || empty($request->search)) {
             return response()->json([
                 'suggestions' => [],
             ]);

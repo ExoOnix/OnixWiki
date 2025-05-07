@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Editor;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-
-use App\Models\Page;
+use Illuminate\Support\Str;
 
 class ImageUploadController extends Controller
 {
@@ -29,6 +27,7 @@ class ImageUploadController extends Controller
             ],
         ]);
     }
+
     public function storeByUrl(Request $request)
     {
         $request->validate([
@@ -38,8 +37,8 @@ class ImageUploadController extends Controller
         $imageUrl = $request->input('url');
         $imageContents = Http::get($imageUrl)->body();
         $extension = pathinfo(parse_url($imageUrl, PHP_URL_PATH), PATHINFO_EXTENSION);
-        $imageName = Str::random(40) . '.' . $extension;
-        $path = 'images/' . $imageName;
+        $imageName = Str::random(40).'.'.$extension;
+        $path = 'images/'.$imageName;
 
         Storage::disk('public')->put($path, $imageContents);
 

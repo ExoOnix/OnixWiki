@@ -18,7 +18,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 interface PageProps extends InertiaPageProps {
     users: {
-        data: User[];
+        data: (User & { roles: { name: string }[] })[]; // Include roles in the user type
         current_page: number;
         last_page: number;
         per_page: number;

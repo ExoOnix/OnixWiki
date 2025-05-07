@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Wiki;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-
-// Models
 use App\Models\Page;
+use Illuminate\Http\Request;
+// Models
+use Inertia\Inertia;
 
 class PageController extends Controller
 {
@@ -19,8 +18,10 @@ class PageController extends Controller
                 'page' => $homepage,
             ]);
         }
+
         return Inertia::render('home');
     }
+
     public function create(Request $request)
     {
         if ($request->user()->cannot('create', Page::class)) {
@@ -29,6 +30,7 @@ class PageController extends Controller
 
         return Inertia::render('pages/create');
     }
+
     public function store(Request $request)
     {
         if ($request->user()->cannot('create', Page::class)) {
@@ -44,6 +46,7 @@ class PageController extends Controller
 
         return redirect()->route('pages.show', $page)->with('success', 'Page created successfully!');
     }
+
     public function show(Request $request, Page $page)
     {
         return Inertia::render('pages/show', [
@@ -59,6 +62,7 @@ class PageController extends Controller
             ],
         ]);
     }
+
     public function edit(Request $request, Page $page)
     {
         if ($request->user()->cannot('update', $page)) {
@@ -69,7 +73,9 @@ class PageController extends Controller
             'page' => $page,
         ]);
     }
-    public function update(Request $request, Page $page) {
+
+    public function update(Request $request, Page $page)
+    {
         if ($request->user()->cannot('update', $page)) {
             abort(403);
         }
@@ -82,12 +88,15 @@ class PageController extends Controller
 
         return redirect()->route('pages.show', $page)->with('success', 'Page created successfully!');
     }
-    public function destroy(Request $request, Page $page) {
+
+    public function destroy(Request $request, Page $page)
+    {
         if ($request->user()->cannot('delete', $page)) {
             abort(403);
         }
 
         $page->delete();
+
         return redirect()->route('home')->with('success', 'Your action was successful!');
     }
 }

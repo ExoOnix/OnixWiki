@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
 
 class Page extends Model
 {
-    use Sluggable, SluggableScopeHelpers, Searchable;
-
+    use Searchable, Sluggable, SluggableScopeHelpers;
 
     protected $fillable = [
         'title',
@@ -27,14 +25,16 @@ class Page extends Model
     {
         return [
             'slug' => [
-                'source' => 'title'
-            ]
+                'source' => 'title',
+            ],
         ];
     }
+
     public function getRouteKeyName(): string
     {
         return 'slug';
     }
+
     public function toSearchableArray(): array
     {
         return [
@@ -42,5 +42,4 @@ class Page extends Model
             'slug' => $this->slug,
         ];
     }
-
 }

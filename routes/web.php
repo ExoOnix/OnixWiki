@@ -1,10 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Wiki\PageController;
-use App\Http\Controllers\Editor\ImageUploadController;
-use App\Http\Controllers\Wiki\SearchController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Editor\ImageUploadController;
+use App\Http\Controllers\Wiki\PageController;
+use App\Http\Controllers\Wiki\SearchController;
+use Illuminate\Support\Facades\Route;
+
 // Public routes;
 Route::get('/', [PageController::class, 'home'])->name('home');
 
