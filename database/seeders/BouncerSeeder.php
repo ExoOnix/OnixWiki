@@ -6,6 +6,7 @@ use App\Models\Page;
 use App\Models\User;
 use Bouncer;
 use Illuminate\Database\Seeder;
+use Silber\Bouncer\Database\Role;
 
 class BouncerSeeder extends Seeder
 {
@@ -16,10 +17,14 @@ class BouncerSeeder extends Seeder
     {
         Bouncer::allow('superadmin')->everything();
 
+        // ADMIN
         Bouncer::allow('admin')->everything();
+        // ADMIN Users
         Bouncer::forbid('admin')->toManage(User::class);
-        Bouncer::forbid('admin')->to('users.view');
         Bouncer::forbid('admin')->to('users.assignRole');
+        // ADMIN Roles
+        Bouncer::forbid('admin')->toManage(Role::class);
+
 
         Bouncer::allow('writer')->toManage(Page::class);
     }

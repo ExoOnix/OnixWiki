@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Inertia\Inertia; // Import the User model
+use Inertia\Inertia;
 use Silber\Bouncer\Database\Role;
 
 use Bouncer;
@@ -15,7 +15,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::select('id', 'name', 'email', 'created_at')
-            ->with('roles:name') // Include roles with only the name field
+            ->with('roles:title') // Include roles with only the title field
             ->orderBy('created_at', 'desc')
             ->paginate(10);
         $roles = Role::all();

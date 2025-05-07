@@ -50,8 +50,8 @@ export interface User {
 export interface Role {
     id: number;
     name: string;
-    title: string;
-    scope: string | null;
+    title: string; // Made optional
+    scope?: string | null; // Made optional
     created_at: string; // ISO 8601 date string
     updated_at: string; // ISO 8601 date string
 }

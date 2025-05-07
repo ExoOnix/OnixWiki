@@ -12,6 +12,11 @@ const sidebarNavItems: NavItem[] = [
         href: '/admin/users',
         icon: null,
     },
+    {
+        title: 'Roles',
+        href: '/admin/roles',
+        icon: null,
+    },
 ];
 
 export default function AdminLayout({ children }: PropsWithChildren) {
