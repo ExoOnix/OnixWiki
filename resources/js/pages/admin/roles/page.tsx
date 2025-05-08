@@ -4,7 +4,7 @@ import { Head } from '@inertiajs/react';
 
 import AdminLayout from '@/layouts/admin/layout';
 import HeadingSmall from '@/components/heading-small';
-import { usePage } from '@inertiajs/react';
+import { usePage, Link } from '@inertiajs/react';
 
 interface RolesPageProps {
     roles: Role[];
@@ -28,7 +28,8 @@ export default function User() {
                     <HeadingSmall title="Roles" description="Manage Roles" />
                     <div className="w-full">
                         {props.roles.map((role) => ( // Role type is inferred from RolesPageProps
-                            <div
+                            <Link
+                                href={route('admin.roles.show', { role: role.id })}
                                 key={role.id}
                                 className="border rounded px-4 py-2 shadow-sm my-3 flex justify-between items-center"
                             >
@@ -36,7 +37,7 @@ export default function User() {
                                 <span className="text-gray-500 text-sm">
                                     {role.abilities_count} permissions
                                 </span>
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 </div>

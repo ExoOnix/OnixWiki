@@ -17,4 +17,15 @@ class RoleController extends Controller
             'roles' => $roles,
         ]);
     }
+    public function show(Request $request, Role $role) {
+        if ($request->user()->cannot('view', $role)) {
+            abort(403);
+        }
+
+        $role->load('abilities'); // Eager load the permissions for the role
+
+        return Inertia::render('admin/roles/show', [
+            'role' => $role,
+        ]);
+    }
 }

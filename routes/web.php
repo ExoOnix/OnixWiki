@@ -43,6 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         });
         Route::prefix('roles')->group(function () {
             Route::get('/', [RoleController::class, 'index'])->middleware('can:view,' . Role::class)->name('admin.roles.index');
+            Route::get('{role}', [RoleController::class, 'show'])->name('admin.roles.show');
         });
     });
 });
