@@ -15,17 +15,38 @@ class BouncerSeeder extends Seeder
      */
     public function run(): void
     {
-        Bouncer::allow('superadmin')->everything();
+        // Superadmin
+        // Users
+        Bouncer::allow('superadmin')->to('create', User::class);
+        Bouncer::allow('superadmin')->to('update', User::class);
+        Bouncer::allow('superadmin')->to('delete', User::class);
+        Bouncer::allow('superadmin')->to('view', User::class);
+
+        // Pages
+        Bouncer::allow('superadmin')->to('create', Page::class);
+        Bouncer::allow('superadmin')->to('update', Page::class);
+        Bouncer::allow('superadmin')->to('delete', Page::class);
+        Bouncer::allow('superadmin')->to('view', Page::class);
+
+        // Roles
+        Bouncer::allow('superadmin')->to('create', Role::class);
+        Bouncer::allow('superadmin')->to('update', Role::class);
+        Bouncer::allow('superadmin')->to('delete', Role::class);
+        Bouncer::allow('superadmin')->to('view', Role::class);
+        Bouncer::allow('superadmin')->to('users.assignRole');
 
         // ADMIN
-        Bouncer::allow('admin')->everything();
-        // ADMIN Users
-        Bouncer::forbid('admin')->toManage(User::class);
-        Bouncer::forbid('admin')->to('users.assignRole');
-        // ADMIN Roles
-        Bouncer::forbid('admin')->toManage(Role::class);
+        // Pages
+        Bouncer::allow('admin')->to('create', Page::class);
+        Bouncer::allow('admin')->to('update', Page::class);
+        Bouncer::allow('admin')->to('delete', Page::class);
+        Bouncer::allow('admin')->to('view', Page::class);
 
-
-        Bouncer::allow('writer')->toManage(Page::class);
+        // Writer
+        // Pages
+        Bouncer::allow('writer')->to('create', Page::class);
+        Bouncer::allow('writer')->to('update', Page::class);
+        Bouncer::allow('writer')->to('delete', Page::class);
+        Bouncer::allow('writer')->to('view', Page::class);
     }
 }
