@@ -54,6 +54,7 @@ export interface Role {
     scope?: string | null; // Made optional
     created_at: string; // ISO 8601 date string
     updated_at: string; // ISO 8601 date string
+    abilities_count: number; // Add permissions count
 }
 
 export * from './editor/editor';

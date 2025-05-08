@@ -30,9 +30,12 @@ export default function User() {
                         {props.roles.map((role) => ( // Role type is inferred from RolesPageProps
                             <div
                                 key={role.id}
-                                className="border rounded px-4 py-2 shadow-sm my-3"
+                                className="border rounded px-4 py-2 shadow-sm my-3 flex justify-between items-center"
                             >
-                                {role.title}
+                                <span>{role.title}</span>
+                                <span className="text-gray-500 text-sm">
+                                    {role.abilities_count} permissions
+                                </span>
                             </div>
                         ))}
                     </div>
