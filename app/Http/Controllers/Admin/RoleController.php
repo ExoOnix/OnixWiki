@@ -17,15 +17,28 @@ class RoleController extends Controller
             'roles' => $roles,
         ]);
     }
-    public function show(Request $request, Role $role) {
+    public function show(Request $request, Role $role)
+    {
         if ($request->user()->cannot('view', $role)) {
             abort(403);
         }
 
-        $role->load('abilities'); // Eager load the permissions for the role
+        // Load only the assigned abilities
+        $role->load('abilities');
+        $assignedIds = $role->abilities->pluck('id')->toArray();
+
+        // Build the full ability list with isAssigned
+        $allAbilities = Ability::all()->map(function ($ability) use ($assignedIds) {
+            $ability->isAssigned = in_array($ability->id, $assignedIds);
+            return $ability;
+        });
+
+        // Convert role to array to customize the response structure
+        $roleArray = $role->toArray();
+        $roleArray['abilities'] = $allAbilities;
 
         return Inertia::render('admin/roles/show', [
-            'role' => $role,
+            'role' => $roleArray,
         ]);
     }
 }

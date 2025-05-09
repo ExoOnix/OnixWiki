@@ -24,6 +24,7 @@ interface Ability {
         forbidden: number;
         scope: string | null;
     };
+    isAssigned: boolean;
 }
 
 interface Role extends BaseRole {
@@ -56,7 +57,7 @@ export default function User() {
                         <ul className="list-disc pl-5">
                             {props.role.abilities.map((ability: Ability) => (
                                 <li key={ability.title} className="my-2">
-                                    {ability.title}
+                                    {ability.title} - {ability.isAssigned ? 'Assigned' : 'Not Assigned'}
                                 </li>
                             ))}
                         </ul>
