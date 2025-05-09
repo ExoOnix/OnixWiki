@@ -8,6 +8,7 @@ use Inertia\Inertia; // Import the User model
 use Silber\Bouncer\Database\Role;
 use Silber\Bouncer\Database\Ability;
 
+use Bouncer;
 class RoleController extends Controller
 {
     public function index() {
@@ -40,5 +41,21 @@ class RoleController extends Controller
         return Inertia::render('admin/roles/show', [
             'role' => $roleArray,
         ]);
+    }
+    public function setAbility(Request $request, Role $role) {
+        if ($request->user()->cannot('update', $role)) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'ability' => 'required|exists:abilities,id',
+            'allow' => 'required|boolean',
+        ]);
+
+        if ($validated['allow']) {
+            Bouncer::allow($role)->to($validated['ability']);
+        } else {
+            Bouncer::disallow($role)->to($validated['ability']);
+        }
     }
 }
