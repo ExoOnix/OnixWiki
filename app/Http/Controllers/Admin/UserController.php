@@ -7,12 +7,12 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Silber\Bouncer\Database\Role;
-
+Use App\Models\Page;
 use Bouncer;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $users = User::select('id', 'name', 'email', 'created_at')
             ->with('roles:title') // Include roles with only the title field
@@ -23,6 +23,16 @@ class UserController extends Controller
         return Inertia::render('admin/users/page', [
             'users' => $users,
             'roles' => $roles,
+            'auth' => [
+                'user' => $request->user(),
+                'can' => [
+                    'assign-role' => $request->user()->can('users.assignRole'),
+                    'delete-user' => $request->user()->can('delete', User::class),
+                    'create-pages' => $request->user()?->can('create', Page::class),
+                    'users.view' => $request->user()?->can('view', User::class),
+                    'roles.view' => $request->user()?->can('view', Role::class),
+                ],
+            ],
         ]);
     }
 

@@ -1,5 +1,3 @@
-"use client"
-
 import { ColumnDef } from "@tanstack/react-table"
 import { type User, type Role } from "@/types"
 import { MoreHorizontal } from "lucide-react"
@@ -18,6 +16,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
 interface RolesPageProps {
     roles: Role[]; // Ensure roles is an array of Role objects
+    auth: {
+        can: {
+            'delete-user': boolean;
+            'assign-role': boolean;
+        }
+    }
 }
 
 export const columns: ColumnDef<User>[] = [
@@ -61,6 +65,10 @@ export const columns: ColumnDef<User>[] = [
             const { props } = usePage<{ props: RolesPageProps }>();
             const roles = props.roles as Role[]; // Explicitly cast props.roles to Role[]
 
+            // Assert the type for `props.user` to avoid 'unknown' type
+            const userCanDelete = (props.auth as { can: { 'delete-user': boolean } }).can['delete-user'];
+            const userCanAssignRole = (props.auth as { can: { 'assign-role': boolean } }).can['assign-role'];
+
             // Ensure roles is an array and get the user's current role title or default to "No Roles"
             const userRoleTitle = Array.isArray(user.roles) && user.roles.length > 0
                 ? user.roles[0].title // Use title instead of name
@@ -81,30 +89,38 @@ export const columns: ColumnDef<User>[] = [
                         >
                             Copy user ID
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <RadioGroup
-                            className="my-3"
-                            defaultValue={userRoleTitle} // Match defaultValue with role.title
-                            onValueChange={(selectedRoleTitle) => {
-                                const selectedRoleId = roles.find((role) => role.title === selectedRoleTitle)?.id || null; // Match by title
-                                router.post(route('admin.users.assignRole', { user: user.id, role_id: selectedRoleId }), { preserveState: true, preserveScroll: true })
-                            }}
-                        >
-                            {roles.map((role) => (
-                                <div key={role.id} className="flex items-center space-x-2">
-                                    <RadioGroupItem value={role.title} id={`role-${role.id}`} /> {/* Use title */}
-                                    <Label htmlFor={`role-${role.id}`}>{role.title}</Label> {/* Use title */}
+                        {userCanAssignRole && (
+                            <div>
+                                <DropdownMenuSeparator />
+                                <RadioGroup
+                                    className="my-3"
+                                    defaultValue={userRoleTitle} // Match defaultValue with role.title
+                                    onValueChange={(selectedRoleTitle) => {
+                                        const selectedRoleId = roles.find((role) => role.title === selectedRoleTitle)?.id || null; // Match by title
+                                        router.post(route('admin.users.assignRole', { user: user.id, role_id: selectedRoleId }), { preserveState: true, preserveScroll: true })
+                                    }}
+                                >
+                                    {roles.map((role) => (
+                                        <div key={role.id} className="flex items-center space-x-2">
+                                            <RadioGroupItem value={role.title} id={`role-${role.id}`} /> {/* Use title */}
+                                            <Label htmlFor={`role-${role.id}`}>{role.title}</Label> {/* Use title */}
+                                        </div>
+                                    ))}
+                                    <div className="flex items-center space-x-2">
+                                        <RadioGroupItem value="No Roles" id="no-roles" />
+                                        <Label htmlFor="no-roles">No Roles</Label>
+                                    </div>
+                                </RadioGroup>
                                 </div>
-                            ))}
-                            <div className="flex items-center space-x-2">
-                                <RadioGroupItem value="No Roles" id="no-roles" />
-                                <Label htmlFor="no-roles">No Roles</Label>
+                        )}
+                        {userCanDelete && (
+                            <div>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem variant="destructive"
+                                    onClick={() => router.delete(route('admin.users.destroy', { user: user.id }), { preserveState: true, preserveScroll: true })}
+                                >Delete user</DropdownMenuItem>
                             </div>
-                        </RadioGroup>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem variant="destructive"
-                            onClick={() => router.delete(route('admin.users.destroy', { user: user.id }), { preserveState: true, preserveScroll: true })}
-                        >Delete user</DropdownMenuItem>
+                        )}
                     </DropdownMenuContent>
                 </DropdownMenu>
             );

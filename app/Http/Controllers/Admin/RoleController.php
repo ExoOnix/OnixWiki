@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Inertia\Inertia; // Import the User model
 use Silber\Bouncer\Database\Role;
 use Silber\Bouncer\Database\Ability;
+use App\Models\User;
+use App\Models\Page;
 
 use Bouncer;
 class RoleController extends Controller
@@ -40,6 +42,15 @@ class RoleController extends Controller
 
         return Inertia::render('admin/roles/show', [
             'role' => $roleArray,
+            'auth' => [
+                'user' => $request->user(),
+                'can' => [
+                    'update-role' => $request->user()->can('update', Role::class),
+                    'create-pages' => $request->user()?->can('create', Page::class),
+                    'users.view' => $request->user()?->can('view', User::class),
+                    'roles.view' => $request->user()?->can('view', Role::class),
+                ],
+            ],
         ]);
     }
     public function setAbility(Request $request, Role $role) {

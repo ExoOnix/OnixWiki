@@ -36,6 +36,11 @@ interface Role extends BaseRole {
 
 interface RolesPageProps {
     role: Role;
+    auth: {
+        can: {
+            'update-role': boolean;
+        }
+    }
     [key: string]: any;
 }
 
@@ -74,6 +79,7 @@ export default function User() {
                         {props.role.abilities.map((ability) => (
                             <div key={ability.id} className="flex items-center space-x-2">
                                 <Switch
+                                    disabled={!props.auth.can['update-role']}
                                     checked={abilitiesState[ability.id]}
                                     onCheckedChange={() => handleToggle(ability.id)}
                                     id={ability.title}
