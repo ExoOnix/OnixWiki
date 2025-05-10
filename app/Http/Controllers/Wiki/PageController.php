@@ -49,6 +49,10 @@ class PageController extends Controller
 
     public function show(Request $request, Page $page)
     {
+        if ($page->restricted && $request->user()->cannot('view', $page)) {
+            abort(403);
+        }
+
         return Inertia::render('pages/show', [
             'page' => $page,
             'auth' => [
