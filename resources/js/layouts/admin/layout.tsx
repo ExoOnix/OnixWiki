@@ -9,11 +9,12 @@ import { usePage } from '@inertiajs/react';
 
 
 export default function AdminLayout({ children }: PropsWithChildren) {
+    const { auth } = usePage<SharedData & { auth: Auth }>().props;
+
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {
         return null;
     }
-    const { auth } = usePage<SharedData & { auth: Auth }>().props;
 
     const sidebarNavItems: NavItem[] = [
         ...(auth.can['users.view']

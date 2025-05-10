@@ -62,7 +62,7 @@ export const columns: ColumnDef<User>[] = [
         id: "actions",
         cell: ({ row }) => {
             const user: User = row.original;
-            const { props } = usePage<{ props: RolesPageProps }>();
+            const { props } = usePage<{ props: RolesPageProps }>(); // eslint-disable-line
             const roles = props.roles as Role[]; // Explicitly cast props.roles to Role[]
 
             // Assert the type for `props.user` to avoid 'unknown' type

@@ -16,7 +16,6 @@ interface Ability {
     entity_id: number | null;
     entity_type: string | null;
     only_owned: boolean;
-    options: any[];
     scope: string | null;
     created_at: string;
     updated_at: string;
@@ -41,7 +40,7 @@ interface RolesPageProps {
             'update-role': boolean;
         }
     }
-    [key: string]: any;
+    [key: string]: unknown;
 }
 
 const breadcrumbs: BreadcrumbItem[] = [

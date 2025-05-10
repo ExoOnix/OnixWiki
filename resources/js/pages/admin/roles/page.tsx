@@ -8,7 +8,6 @@ import { usePage, Link } from '@inertiajs/react';
 
 interface RolesPageProps {
     roles: Role[];
-    [key: string]: any;
 }
 
 const breadcrumbs: BreadcrumbItem[] = [
