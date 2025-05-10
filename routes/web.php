@@ -24,6 +24,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{page}/edit', [PageController::class, 'edit'])->name('pages.edit');
         Route::patch('{page}', [PageController::class, 'update'])->name('pages.update');
         Route::delete('{page}', [PageController::class, 'destroy'])->name('pages.destroy');
+
+        // Abilities
+        Route::get('/{page}/abilities', [PageController::class, 'abilities'])->name('pages.abilities');
     });
 
     // Editor routes

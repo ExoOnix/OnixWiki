@@ -99,4 +99,15 @@ class PageController extends Controller
 
         return redirect()->route('home')->with('success', 'Your action was successful!');
     }
+
+    // Abilites
+    public function abilities(Request $request, Page $page) {
+        if ($request->user()->cannot('update', $page)) {
+            abort(403);
+        }
+
+        return Inertia::render('pages/abilities', [
+            'page' => $page,
+        ]);
+    }
 }
