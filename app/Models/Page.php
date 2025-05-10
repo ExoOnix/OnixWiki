@@ -14,6 +14,7 @@ class Page extends Model
     protected $fillable = [
         'title',
         'content',
+        'restricted',
     ];
 
     protected $casts = [

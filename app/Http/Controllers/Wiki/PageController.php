@@ -110,4 +110,16 @@ class PageController extends Controller
             'page' => $page,
         ]);
     }
+    public function setRestricted(Request $request, Page $page) {
+        if ($request->user()->cannot('update', $page)) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'restricted' => 'required|boolean',
+        ]);
+
+        $page->update($validated);
+        return redirect()->back()->with('success', 'Your action was successful!');
+    }
 }
