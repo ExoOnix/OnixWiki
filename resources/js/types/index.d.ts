@@ -3,7 +3,7 @@ import type { Config } from 'ziggy-js';
 
 export interface Auth {
     user: User;
-    can: Can
+    can: Can;
 }
 
 export interface Can {

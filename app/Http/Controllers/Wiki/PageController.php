@@ -105,7 +105,8 @@ class PageController extends Controller
     }
 
     // Abilites
-    public function abilities(Request $request, Page $page) {
+    public function abilities(Request $request, Page $page)
+    {
         if ($request->user()->cannot('update', $page)) {
             abort(403);
         }
@@ -114,7 +115,9 @@ class PageController extends Controller
             'page' => $page,
         ]);
     }
-    public function setRestricted(Request $request, Page $page) {
+
+    public function setRestricted(Request $request, Page $page)
+    {
         if ($request->user()->cannot('update', $page)) {
             abort(403);
         }
@@ -124,6 +127,7 @@ class PageController extends Controller
         ]);
 
         $page->update($validated);
+
         return redirect()->back()->with('success', 'Your action was successful!');
     }
 }

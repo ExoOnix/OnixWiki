@@ -2,11 +2,9 @@ import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
-import { type NavItem, type SharedData, type Auth } from '@/types';
-import { Link } from '@inertiajs/react';
+import { type Auth, type NavItem, type SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
-import { usePage } from '@inertiajs/react';
-
 
 export default function AdminLayout({ children }: PropsWithChildren) {
     const { auth } = usePage<SharedData & { auth: Auth }>().props;

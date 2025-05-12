@@ -44,9 +44,9 @@ export default function Home({ results }: HomeProps) {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Search" />
             <div className="flex h-full w-full flex-1 justify-center p-4">
-                <div className="w-full max-w-screen-md rounded-lg border bg-background p-6 shadow">
+                <div className="bg-background w-full max-w-screen-md rounded-lg border p-6 shadow">
                     <section>
-                        <h1 className="mb-6 text-3xl font-semibold text-foreground">Search Results</h1>
+                        <h1 className="text-foreground mb-6 text-3xl font-semibold">Search Results</h1>
                         <div className="mb-3">
                             <Input placeholder="Search..." onChange={handleSearch} value={text} />
                         </div>
@@ -54,13 +54,10 @@ export default function Home({ results }: HomeProps) {
                             {results && results.length > 0 ? (
                                 <ul className="space-y-4">
                                     {results.map((result: SearchResult, index: number) => (
-                                        <li
-                                            key={index}
-                                            className="rounded-lg border bg-muted p-4"
-                                        >
+                                        <li key={index} className="bg-muted rounded-lg border p-4">
                                             <Link
                                                 href={route('pages.show', { page: result.slug })}
-                                                className="text-lg font-medium text-primary hover:underline"
+                                                className="text-primary text-lg font-medium hover:underline"
                                             >
                                                 {result.title}
                                             </Link>

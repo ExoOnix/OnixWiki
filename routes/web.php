@@ -1,12 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Editor\ImageUploadController;
 use App\Http\Controllers\Wiki\PageController;
 use App\Http\Controllers\Wiki\SearchController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\RoleController;
 use App\Models\User;
+use Illuminate\Support\Facades\Route;
 use Silber\Bouncer\Database\Role;
 
 // Public routes;
@@ -39,14 +39,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Admin routes
     Route::prefix('admin')->group(function () {
         Route::prefix('users')->group(function () {
-            Route::get('/', [UserController::class, 'index'])->middleware('can:view,' . User::class)->name('admin.users.index');
+            Route::get('/', [UserController::class, 'index'])->middleware('can:view,'.User::class)->name('admin.users.index');
             Route::delete('{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 
             // Assign Role
             Route::post('{user}/assign-role', [UserController::class, 'assignRole'])->middleware('can:users.assignRole')->name('admin.users.assignRole');
         });
         Route::prefix('roles')->group(function () {
-            Route::get('/', [RoleController::class, 'index'])->middleware('can:view,' . Role::class)->name('admin.roles.index');
+            Route::get('/', [RoleController::class, 'index'])->middleware('can:view,'.Role::class)->name('admin.roles.index');
             Route::get('{role}', [RoleController::class, 'show'])->name('admin.roles.show');
             Route::post('{role}/set-ability', [RoleController::class, 'setAbility'])->name('admin.roles.setAbility');
         });

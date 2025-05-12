@@ -3,12 +3,12 @@
 namespace App\Http\Middleware;
 
 use App\Models\Page;
+use App\Models\User;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-use Tighten\Ziggy\Ziggy;
-use App\Models\User;
 use Silber\Bouncer\Database\Role;
+use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {

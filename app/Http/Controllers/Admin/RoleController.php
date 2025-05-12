@@ -3,23 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Inertia\Inertia; // Import the User model
-use Silber\Bouncer\Database\Role;
-use Silber\Bouncer\Database\Ability;
-use App\Models\User;
 use App\Models\Page;
-
+use App\Models\User; // Import the User model
 use Bouncer;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Silber\Bouncer\Database\Ability;
+use Silber\Bouncer\Database\Role;
+
 class RoleController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $roles = Role::withCount('abilities')->get(); // Include permissions count
 
         return Inertia::render('admin/roles/page', [
             'roles' => $roles,
         ]);
     }
+
     public function show(Request $request, Role $role)
     {
         if ($request->user()->cannot('view', $role)) {
@@ -33,6 +35,7 @@ class RoleController extends Controller
         // Build the full ability list with isAssigned
         $allAbilities = Ability::all()->map(function ($ability) use ($assignedIds) {
             $ability->isAssigned = in_array($ability->id, $assignedIds);
+
             return $ability;
         });
 
@@ -53,7 +56,9 @@ class RoleController extends Controller
             ],
         ]);
     }
-    public function setAbility(Request $request, Role $role) {
+
+    public function setAbility(Request $request, Role $role)
+    {
         if ($request->user()->cannot('update', $role)) {
             abort(403);
         }

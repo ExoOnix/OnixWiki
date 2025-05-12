@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Page;
 use App\Models\User;
+use Bouncer;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Silber\Bouncer\Database\Role;
-Use App\Models\Page;
-use Bouncer;
 
 class UserController extends Controller
 {
@@ -46,6 +46,7 @@ class UserController extends Controller
 
         return redirect()->back()->with('success', 'Your action was successful!');
     }
+
     public function assignRole(Request $request, User $user)
     {
         $validated = $request->validate([
@@ -60,7 +61,6 @@ class UserController extends Controller
             $role = Role::findOrFail($roleId);
             Bouncer::sync($user)->roles([$role]);
         }
-
 
         return redirect()->back()->with('success', 'Your action was successful!');
     }
