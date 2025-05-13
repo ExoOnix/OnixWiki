@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Wiki;
 use App\Http\Controllers\Controller;
 use App\Models\Page;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 // Models
 use Inertia\Inertia;
+
 
 class PageController extends Controller
 {
@@ -110,6 +112,15 @@ class PageController extends Controller
         if ($request->user()->cannot('update', $page)) {
             abort(403);
         }
+        $permissions = DB::table('permissions')
+            ->join('abilities', 'permissions.ability_id', '=', 'abilities.id')
+            ->where('abilities.entity_type', Page::class)
+            ->where('abilities.entity_id', $page->id)
+            ->select('permissions.*', 'abilities.name as ability_name', 'abilities.title as ability_title', 'abilities.entity_type as ability_entity_type', 'abilities.scope as ability_scope')
+            ->get();
+
+
+        // return response()->json($permissions, 200);
 
         return Inertia::render('pages/abilities', [
             'page' => $page,
