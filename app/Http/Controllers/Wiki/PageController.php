@@ -124,6 +124,7 @@ class PageController extends Controller
 
         return Inertia::render('pages/abilities', [
             'page' => $page,
+            'permissions' => $permissions,
         ]);
     }
 

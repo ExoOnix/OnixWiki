@@ -5,11 +5,25 @@ import { type BreadcrumbItem, type Page } from '@/types';
 import { Head, router } from '@inertiajs/react';
 import { useState } from 'react';
 
+type AbilityPerms = {
+    id: number;
+    ability_id: number;
+    entity_id: number;
+    entity_type: string;
+    forbidden: boolean;
+    scope: string | null;
+    ability_name: string;
+    ability_title: string;
+    ability_entity_type: string;
+    ability_scope: string | null;
+};
+
 interface HomeProps {
     page: Page;
+    permissions: AbilityPerms[];
 }
 
-export default function Home({ page }: HomeProps) {
+export default function Home({ page, permissions }: HomeProps) {
     const [restricted, setRestricted] = useState(page?.restricted ?? false);
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -48,6 +62,18 @@ export default function Home({ page }: HomeProps) {
                                 <Switch checked={restricted} id="restricted-mode" onCheckedChange={toggleRestricted} />
                                 <Label htmlFor="restricted-mode">Restricted Mode</Label>
                             </div>
+                            {/* Loop over permissions and display them */}
+                            {permissions.map((permission) => (
+                                <div key={permission.id} className="mt-3">
+                                    <h3
+                                        className="my-3 flex items-center justify-between rounded border px-4 py-2 shadow-sm"
+                                    >
+                                        <span>{permission.ability_name}</span>
+                                        <span className="text-sm text-gray-500">{permission.entity_id}</span>
+                                        <span className="text-sm text-gray-500">{permission.forbidden ? 'true' : 'false'}</span>
+                                    </h3>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
