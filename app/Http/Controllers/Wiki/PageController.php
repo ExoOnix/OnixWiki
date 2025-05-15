@@ -8,8 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 // Models
 use Inertia\Inertia;
-
-
+use Silber\Bouncer\Database\Ability;
+use App\Models\User;
+use Silber\Bouncer\Database\Role;
 class PageController extends Controller
 {
     public function home()
@@ -109,19 +110,57 @@ class PageController extends Controller
     // Abilites
     public function abilities(Request $request, Page $page)
     {
+        // Check if the user has permission to update the page
         if ($request->user()->cannot('update', $page)) {
             abort(403);
         }
-        $permissions = DB::table('permissions')
-            ->join('abilities', 'permissions.ability_id', '=', 'abilities.id')
-            ->join('users', 'abilities.entity_id', '=', 'users.id')
-            ->where('abilities.entity_type', Page::class)
-            ->where('abilities.entity_id', $page->id)
-            ->select('permissions.*', 'abilities.name as ability_name', 'abilities.title as ability_title', 'abilities.entity_type as ability_entity_type', 'abilities.scope as ability_scope', 'users.name as user_name', 'users.id as user_id')
+
+        // Initialize an empty array to store permissions
+        $permissions = [];
+
+        // Retrieve all abilities associated with the Page model
+        $abilities = Ability::where('entity_type', Page::class)
+            ->where('entity_id', $page->id)
             ->get();
 
+        // Iterate through each ability
+        foreach ($abilities as $ability) {
+            // Fetch assignments from the permissions table
+            $assignments = DB::table('permissions')
+                ->where('ability_id', $ability->id)
+                ->get();
 
-        // return response()->json($permissions, 200);
+            // Process each assignment
+            foreach ($assignments as $assignment) {
+                $entityType = $assignment->entity_type;
+                $entityId = $assignment->entity_id;
+                $forbidden = $assignment->forbidden;
+
+                // Determine if the assignment is to a user or role
+                if ($entityType === 'App\\Models\\User') {
+                    $user = User::find($entityId);
+                    $entityName = $user ? $user->name : 'Unknown User';
+                    $entityIdentifier = "User: {$entityName} (ID: {$entityId})";
+                } elseif ($entityType === 'roles') {
+                    $role = Role::find($entityId);
+                    $entityName = $role ? $role->name : 'Unknown Role';
+                    $entityIdentifier = "Role: {$entityName} (ID: {$entityId})";
+                } else {
+                    $entityIdentifier = "Unknown Entity (Type: {$entityType}, ID: {$entityId})";
+                }
+
+                // Append the permission details to the array
+                $permissions[] = [
+                    'ability_name' => $ability->name,
+                    'ability_id' => $ability->id,
+                    'assigned_to' => $entityIdentifier,
+                    'forbidden' => $forbidden ? 'Yes' : 'No',
+                ];
+            }
+        }
+
+        // Return the permissions as a JSON response
+        return response()->json($permissions, 200);
 
         return Inertia::render('pages/abilities', [
             'page' => $page,
