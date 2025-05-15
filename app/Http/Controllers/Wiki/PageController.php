@@ -44,7 +44,7 @@ class PageController extends Controller
             'content' => 'required|string',
         ]);
 
-        $page = Page::create($validated);
+        $page = Page::create(array_merge($validated, ['restricted' => false]));
 
         return redirect()->route('pages.show', $page)->with('success', 'Page created successfully!');
     }
