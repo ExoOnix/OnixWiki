@@ -16,6 +16,8 @@ type AbilityPerms = {
     ability_title: string;
     ability_entity_type: string;
     ability_scope: string | null;
+    user_name: string;
+    user_id: number;
 };
 
 interface HomeProps {
@@ -69,7 +71,7 @@ export default function Home({ page, permissions }: HomeProps) {
                                         className="my-3 flex items-center justify-between rounded border px-4 py-2 shadow-sm"
                                     >
                                         <span>{permission.ability_name}</span>
-                                        <span className="text-sm text-gray-500">{permission.entity_id}</span>
+                                        <span className="text-sm text-gray-500">{permission.user_name}</span>
                                         <span className="text-sm text-gray-500">{permission.forbidden ? 'true' : 'false'}</span>
                                     </h3>
                                 </div>

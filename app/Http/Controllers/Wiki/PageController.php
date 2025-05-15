@@ -114,9 +114,10 @@ class PageController extends Controller
         }
         $permissions = DB::table('permissions')
             ->join('abilities', 'permissions.ability_id', '=', 'abilities.id')
+            ->join('users', 'abilities.entity_id', '=', 'users.id')
             ->where('abilities.entity_type', Page::class)
             ->where('abilities.entity_id', $page->id)
-            ->select('permissions.*', 'abilities.name as ability_name', 'abilities.title as ability_title', 'abilities.entity_type as ability_entity_type', 'abilities.scope as ability_scope')
+            ->select('permissions.*', 'abilities.name as ability_name', 'abilities.title as ability_title', 'abilities.entity_type as ability_entity_type', 'abilities.scope as ability_scope', 'users.name as user_name', 'users.id as user_id')
             ->get();
 
 
