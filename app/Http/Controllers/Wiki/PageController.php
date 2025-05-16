@@ -160,7 +160,7 @@ class PageController extends Controller
         }
 
         // Return the permissions as a JSON response
-        return response()->json($permissions, 200);
+        // return response()->json($permissions, 200);
 
         return Inertia::render('pages/abilities', [
             'page' => $page,

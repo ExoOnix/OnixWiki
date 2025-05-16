@@ -6,18 +6,10 @@ import { Head, router } from '@inertiajs/react';
 import { useState } from 'react';
 
 type AbilityPerms = {
-    id: number;
-    ability_id: number;
-    entity_id: number;
-    entity_type: string;
-    forbidden: boolean;
-    scope: string | null;
     ability_name: string;
-    ability_title: string;
-    ability_entity_type: string;
-    ability_scope: string | null;
-    user_name: string;
-    user_id: number;
+    ability_id: number;
+    assigned_to: string;
+    forbidden: boolean;
 };
 
 interface HomeProps {
@@ -71,7 +63,7 @@ export default function Home({ page, permissions }: HomeProps) {
                                         className="my-3 flex items-center justify-between rounded border px-4 py-2 shadow-sm"
                                     >
                                         <span>{permission.ability_name}</span>
-                                        <span className="text-sm text-gray-500">{permission.user_name}</span>
+                                        <span className="text-sm text-gray-500">{permission.assigned_to}</span>
                                         <span className="text-sm text-gray-500">{permission.forbidden ? 'true' : 'false'}</span>
                                     </h3>
                                 </div>
