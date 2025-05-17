@@ -33,7 +33,7 @@ class RoleController extends Controller
         $assignedIds = $role->abilities->pluck('id')->toArray();
 
         // Build the full ability list with isAssigned
-        $allAbilities = Ability::all()->map(function ($ability) use ($assignedIds) {
+        $allAbilities = Ability::whereNull("entity_id")->get()->map(function ($ability) use ($assignedIds) {
             $ability->isAssigned = in_array($ability->id, $assignedIds);
 
             return $ability;

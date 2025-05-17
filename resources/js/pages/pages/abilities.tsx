@@ -1,3 +1,11 @@
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from '@/components/ui/table';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import AppLayout from '@/layouts/app-layout';
@@ -8,9 +16,29 @@ import { useState } from 'react';
 type AbilityPerms = {
     ability_name: string;
     ability_id: number;
-    assigned_to: string;
+    target_type: string;
+    target_info: RoleInfo | UserInfo;
     forbidden: boolean;
 };
+
+
+type RoleInfo = {
+    id: number;
+    name: string;
+    title: string;
+    scope: string | null;
+    created_at: string;
+    updated_at: string;
+};
+
+type UserInfo = {
+    id: number;
+    name: string;
+    email: string;
+    email_verified_at: string | null;
+    created_at: string;
+    updated_at: string;
+  };
 
 interface HomeProps {
     page: Page;
@@ -53,21 +81,53 @@ export default function Home({ page, permissions }: HomeProps) {
                         <h1 className="text-4xl">Abilities</h1>
                         <div className="mt-3">
                             <div className="flex items-center space-x-2">
-                                <Switch checked={restricted} id="restricted-mode" onCheckedChange={toggleRestricted} />
+                                <Switch
+                                    checked={restricted}
+                                    id="restricted-mode"
+                                    onCheckedChange={toggleRestricted}
+                                />
                                 <Label htmlFor="restricted-mode">Restricted Mode</Label>
                             </div>
-                            {/* Loop over permissions and display them */}
-                            {permissions.map((permission) => (
-                                <div key={permission.id} className="mt-3">
-                                    <h3
-                                        className="my-3 flex items-center justify-between rounded border px-4 py-2 shadow-sm"
-                                    >
-                                        <span>{permission.ability_name}</span>
-                                        <span className="text-sm text-gray-500">{permission.assigned_to}</span>
-                                        <span className="text-sm text-gray-500">{permission.forbidden ? 'true' : 'false'}</span>
-                                    </h3>
-                                </div>
-                            ))}
+
+                            {/* Permissions Table */}
+                            <div className="mt-6">
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHead>Ability</TableHead>
+                                            <TableHead>Assigned To</TableHead>
+                                            <TableHead>Forbidden</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {permissions.map((permission) => {
+                                            if (permission.target_type === 'App\\Models\\User') {
+                                                return (
+                                                    <TableRow key={permission.ability_id}>
+                                                        <TableCell>{permission.ability_name}</TableCell>
+                                                        <TableCell>User: {permission.target_info.name}</TableCell>
+                                                        <TableCell>
+                                                            {permission.forbidden ? 'Yes' : 'No'}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                );
+                                            } else if (permission.target_type === 'roles') {
+                                                return (
+                                                    <TableRow key={permission.ability_id}>
+                                                        <TableCell>{permission.ability_name}</TableCell>
+                                                        <TableCell>Role: {permission.target_info.name}</TableCell>
+                                                        <TableCell>
+                                                            {permission.forbidden ? 'Yes' : 'No'}
+                                                        </TableCell>
+                                                    </TableRow>
+                                                );
+                                            }
+                                            return null;
+                                        })}
+
+                                    </TableBody>
+                                </Table>
+                            </div>
                         </div>
                     </div>
                 </div>

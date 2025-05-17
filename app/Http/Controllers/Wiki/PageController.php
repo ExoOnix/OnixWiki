@@ -52,9 +52,10 @@ class PageController extends Controller
 
     public function show(Request $request, Page $page)
     {
-        if ($page->restricted && $request->user()->cannot('view', $page)) {
+        if ($page->restricted && (auth()->guest() || $request->user()->cannot('view', $page))) {
             abort(403);
         }
+
 
         return Inertia::render('pages/show', [
             'page' => $page,
@@ -64,7 +65,8 @@ class PageController extends Controller
                     'edit-pages' => $request->user()?->can('update', $page),
                     'delete-pages' => $request->user()?->can('delete', $page),
                     'create-pages' => $request->user()?->can('create', Page::class),
-                    'users.view' => $request->user()?->can('users.view'),
+                    'users.view' => $request->user()?->can('view', User::class),
+                    'roles.view' => $request->user()?->can('view', Role::class),
                 ],
             ],
         ]);
@@ -138,23 +140,18 @@ class PageController extends Controller
 
                 // Determine if the assignment is to a user or role
                 if ($entityType === 'App\\Models\\User') {
-                    $user = User::find($entityId);
-                    $entityName = $user ? $user->name : 'Unknown User';
-                    $entityIdentifier = "User: {$entityName} (ID: {$entityId})";
+                    $targetInfo = User::find($entityId);
                 } elseif ($entityType === 'roles') {
-                    $role = Role::find($entityId);
-                    $entityName = $role ? $role->name : 'Unknown Role';
-                    $entityIdentifier = "Role: {$entityName} (ID: {$entityId})";
-                } else {
-                    $entityIdentifier = "Unknown Entity (Type: {$entityType}, ID: {$entityId})";
+                    $targetInfo = Role::find($entityId);
                 }
 
                 // Append the permission details to the array
                 $permissions[] = [
                     'ability_name' => $ability->name,
                     'ability_id' => $ability->id,
-                    'assigned_to' => $entityIdentifier,
-                    'forbidden' => $forbidden ? 'Yes' : 'No',
+                    'target_type' => $entityType,
+                    'target_info' => $targetInfo,
+                    'forbidden' => $forbidden,
                 ];
             }
         }
