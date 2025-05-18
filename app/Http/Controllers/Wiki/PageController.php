@@ -162,6 +162,8 @@ class PageController extends Controller
         return Inertia::render('pages/abilities', [
             'page' => $page,
             'permissions' => $permissions,
+            'roles' => Role::all(),
+            'users' => User::all(),
         ]);
     }
 
