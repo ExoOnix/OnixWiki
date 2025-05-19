@@ -14,9 +14,13 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::get('/search/suggestions', [SearchController::class, 'suggestions'])->name('search.suggestions');
-
 // Authenticated routes
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Authed search
+    Route::get('/search/users', [SearchController::class, 'userList'])->name('search.users');
+    Route::get('/search/roles', [SearchController::class, 'roleList'])->name('search.roles');
+
+
     // Page creation routes
     Route::prefix('pages')->group(function () {
         Route::get('/create', [PageController::class, 'create'])->name('pages.create'); // Moved above

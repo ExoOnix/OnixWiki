@@ -41,4 +41,36 @@ class SearchController extends Controller
             'suggestions' => $suggestions,
         ]);
     }
+
+    public function userList(Request $request)
+    {
+        $query = $request->input('q', '');
+        $users = \App\Models\User::query()
+            ->when($query, function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                  ->orWhere('email', 'like', "%{$query}%");
+            })
+            ->limit(10)
+            ->get(['id', 'name', 'email']);
+
+        return response()->json([
+            'users' => $users,
+        ]);
+    }
+
+    public function roleList(Request $request)
+    {
+        $query = $request->input('q', '');
+        $roles = \Silber\Bouncer\Database\Role::query()
+            ->when($query, function ($q) use ($query) {
+                $q->where('name', 'like', "%{$query}%")
+                  ->orWhere('title', 'like', "%{$query}%");
+            })
+            ->limit(10)
+            ->get(['id', 'name', 'title']);
+
+        return response()->json([
+            'roles' => $roles,
+        ]);
+    }
 }

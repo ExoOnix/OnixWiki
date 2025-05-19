@@ -11,7 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Page, type User, type Role } from '@/types';
 import { Head, router } from '@inertiajs/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
     Popover,
@@ -35,12 +35,14 @@ import {
     CommandItem,
     CommandList,
 } from "@/components/ui/command"
+
 type AbilityPerms = {
     ability_name: string;
     ability_id: number;
     target_type: string;
     target_info: RoleInfo | UserInfo;
     forbidden: boolean;
+    id: number;
 };
 
 
@@ -72,6 +74,10 @@ interface HomeProps {
 export default function Home({ page, permissions, roles, users }: HomeProps) {
     const [assignToValue, assignToSetValue] = useState("")
     const [assignToOpen, setAssignToOpen] = useState(false)
+    const [assignToType, setAssignToType] = useState<"user"|"role"|"">("")
+    const [userOptions, setUserOptions] = useState<UserInfo[]>([]);
+    const [roleOptions, setRoleOptions] = useState<RoleInfo[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
     const [restricted, setRestricted] = useState(page?.restricted ?? false);
 
@@ -99,6 +105,18 @@ export default function Home({ page, permissions, roles, users }: HomeProps) {
         });
     };
 
+    useEffect(() => {
+        if (assignToOpen) {
+            // Fetch both users and roles on open, or filter by searchTerm
+            fetch(`/search/users?q=${encodeURIComponent(searchTerm)}`)
+                .then(res => res.json())
+                .then(data => setUserOptions(data.users || []));
+            fetch(`/search/roles?q=${encodeURIComponent(searchTerm)}`)
+                .then(res => res.json())
+                .then(data => setRoleOptions(data.roles || []));
+        }
+    }, [assignToOpen, searchTerm]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Edit Page" />
@@ -124,12 +142,12 @@ export default function Home({ page, permissions, roles, users }: HomeProps) {
                                             Add Ability Override
                                         </Button>
                                     </PopoverTrigger>
-                                    <PopoverContent>
+                                    <PopoverContent className="max-w-xs w-full">
                                         <Label htmlFor="abilities">Set ability type</Label>
 
                                         <Select name="abilities">
-                                            <SelectTrigger className="w-[180px]">
-                                                <SelectValue placeholder="Select a fruit" />
+                                            <SelectTrigger className="min-w-[140px] w-full">
+                                                <SelectValue placeholder="Select a ability type" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectGroup>
@@ -145,51 +163,61 @@ export default function Home({ page, permissions, roles, users }: HomeProps) {
                                         <div>
                                             <Popover open={assignToOpen} onOpenChange={setAssignToOpen}>
                                                 <PopoverTrigger asChild>
-                                                    <Button variant="outline" className="w-[180px] justify-start text-left">
+                                                    <Button variant="outline" className="min-w-[140px] w-full justify-start text-left">
                                                         {assignToValue ? assignToValue : "Select user or role"}
                                                     </Button>
                                                 </PopoverTrigger>
-                                                <PopoverContent className="w-[180px] p-0">
+                                                <PopoverContent className="max-w-xs w-full p-0">
                                                     <Command>
-                                                        <CommandInput placeholder="Search user or role..." />
+                                                        <CommandInput
+                                                            placeholder="Search user or role..."
+                                                            value={searchTerm}
+                                                            onValueChange={setSearchTerm}
+                                                        />
                                                         <CommandList>
                                                             <CommandEmpty>No match found.</CommandEmpty>
                                                             <CommandGroup heading="Roles">
-                                                                {roles
-                                                                    .map((p) => (
-                                                                        <CommandItem
-                                                                            key={p.name}
-                                                                            value={p.name}
-                                                                            onSelect={(val) => {
-                                                                                assignToSetValue(val);
-                                                                                setAssignToOpen(false);
-                                                                            }}
-                                                                        >
-                                                                            {p.name}
-                                                                        </CommandItem>
-                                                                    ))}
+                                                                {roleOptions.map((role) => (
+                                                                    <CommandItem
+                                                                        key={`role-${role.id}`}
+                                                                        value={role.name}
+                                                                        onSelect={() => {
+                                                                            assignToSetValue(role.name);
+                                                                            setAssignToType("role");
+                                                                            setAssignToOpen(false);
+                                                                        }}
+                                                                    >
+                                                                        {role.name}
+                                                                    </CommandItem>
+                                                                ))}
                                                             </CommandGroup>
                                                             <CommandGroup heading="Users">
-                                                                {users
-                                                                    .map((p) => (
-                                                                        <CommandItem
-                                                                            key={p.name}
-                                                                            value={p.name}
-                                                                            onSelect={(val) => {
-                                                                                assignToSetValue(val);
-                                                                                setAssignToOpen(false);
-                                                                            }}
-                                                                        >
-                                                                            {p.name}
-                                                                        </CommandItem>
-                                                                    ))}
+                                                                {userOptions.map((user) => (
+                                                                    <CommandItem
+                                                                        key={`user-${user.id}`}
+                                                                        value={user.name}
+                                                                        onSelect={() => {
+                                                                            assignToSetValue(user.name);
+                                                                            setAssignToType("user");
+                                                                            setAssignToOpen(false);
+                                                                        }}
+                                                                    >
+                                                                        {user.name}
+                                                                    </CommandItem>
+                                                                ))}
                                                             </CommandGroup>
                                                         </CommandList>
                                                     </Command>
                                                 </PopoverContent>
                                             </Popover>
                                         </div>
-
+                                        <div className="flex items-center space-x-2 mt-3">
+                                            <Switch id="forbidden" />
+                                            <Label htmlFor="forbidden">Forbidden Mode</Label>
+                                        </div>
+                                        <Button className="mt-4">
+                                            Submit
+                                        </Button>
                                     </PopoverContent>
                                 </Popover>
 
@@ -208,8 +236,8 @@ export default function Home({ page, permissions, roles, users }: HomeProps) {
                                         {permissions.map((permission) => {
                                             if (permission.target_type === 'App\\Models\\User') {
                                                 return (
-                                                    <TableRow key={permission.ability_id}>
-                                                        <TableCell>{permission.target_info.id}</TableCell>
+                                                    <TableRow key={permission.id}>
+                                                        <TableCell>{permission.ability_name}</TableCell>
                                                         <TableCell>User: {permission.target_info.name}</TableCell>
                                                         <TableCell>
                                                             {permission.forbidden ? 'Yes' : 'No'}
@@ -218,7 +246,7 @@ export default function Home({ page, permissions, roles, users }: HomeProps) {
                                                 );
                                             } else if (permission.target_type === 'roles') {
                                                 return (
-                                                    <TableRow key={permission.target_info.id}>
+                                                    <TableRow key={permission.id}>
                                                         <TableCell>{permission.ability_name}</TableCell>
                                                         <TableCell>Role: {permission.target_info.name}</TableCell>
                                                         <TableCell>

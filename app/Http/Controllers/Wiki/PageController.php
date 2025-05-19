@@ -147,6 +147,7 @@ class PageController extends Controller
 
                 // Append the permission details to the array
                 $permissions[] = [
+                    'id' => $assignment->id,
                     'ability_name' => $ability->name,
                     'ability_id' => $ability->id,
                     'target_type' => $entityType,
