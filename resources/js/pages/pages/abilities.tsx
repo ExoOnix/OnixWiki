@@ -35,6 +35,7 @@ import {
     CommandItem,
     CommandList,
 } from "@/components/ui/command"
+import { Trash2 } from 'lucide-react';
 
 type AbilityPerms = {
     ability_name: string;
@@ -142,6 +143,16 @@ export default function Home({ page, permissions, }: HomeProps) {
         });
     };
 
+    const handleDelete = (permissionId: number) => {
+        router.post(
+            route('pages.deleteAbility', { page: page.slug }),
+            { permission: permissionId },
+            {
+                preserveState: true,
+                preserveScroll: true,
+            }
+        );
+    };
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -270,6 +281,7 @@ export default function Home({ page, permissions, }: HomeProps) {
                                             <TableHead>Ability</TableHead>
                                             <TableHead>Assigned To</TableHead>
                                             <TableHead>Forbidden</TableHead>
+                                            <TableHead>Action</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -285,6 +297,16 @@ export default function Home({ page, permissions, }: HomeProps) {
                                                     </TableCell>
                                                     <TableCell>
                                                         {permission.forbidden ? 'Yes' : 'No'}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="icon"
+                                                            onClick={() => handleDelete(permission.id)}
+                                                            title="Delete"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </Button>
                                                     </TableCell>
                                                 </TableRow>
                                             );

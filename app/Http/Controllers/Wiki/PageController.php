@@ -222,4 +222,16 @@ class PageController extends Controller
 
         return redirect()->back()->with('success', 'Permission updated successfully!');
     }
+    public function deleteAbility(Request $request, Page $page) {
+        if ($request->user()->cannot('update', $page)) {
+            abort(403);
+        }
+        $validated = $request->validate([
+            "permission" => "required|integer",
+        ]);
+
+        DB::table('permissions')->where('id', $validated['permission'])->delete();
+
+        return redirect()->back()->with('success', 'Permission updated successfully!');
+    }
 }

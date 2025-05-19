@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/{page}/abilities', [PageController::class, 'abilities'])->name('pages.abilities');
         Route::post('/{page}/set-restricted', [PageController::class, 'setRestricted'])->name('pages.setRestricted');
         Route::post('/{page}/set-ability', [PageController::class, 'setAbility'])->name('pages.setAbility');
+        Route::post('/{page}/delete-ability', [PageController::class, 'deleteAbility'])->name('pages.deleteAbility');
     });
 
     // Editor routes
