@@ -9,8 +9,8 @@ import {
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type Page, type User, type Role } from '@/types';
-import { Head, router } from '@inertiajs/react';
+import { type BreadcrumbItem, type Page } from '@/types';
+import { Head, router, useForm } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -45,7 +45,6 @@ type AbilityPerms = {
     id: number;
 };
 
-
 type RoleInfo = {
     id: number;
     name: string;
@@ -62,24 +61,35 @@ type UserInfo = {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
-  };
+};
 
 interface HomeProps {
     page: Page;
     permissions: AbilityPerms[];
-    roles: Role[];
-    users: User[];
 }
 
-export default function Home({ page, permissions, roles, users }: HomeProps) {
-    const [assignToValue, assignToSetValue] = useState("")
-    const [assignToOpen, setAssignToOpen] = useState(false)
-    const [assignToType, setAssignToType] = useState<"user"|"role"|"">("")
+type FormInput = {
+    permission: string;
+    target_type: string;
+    target_id: number;
+    forbidden: boolean;
+};
+
+export default function Home({ page, permissions, }: HomeProps) {
+    const [assignToValue, assignToSetValue] = useState("");
+    const [assignToOpen, setAssignToOpen] = useState(false);
     const [userOptions, setUserOptions] = useState<UserInfo[]>([]);
     const [roleOptions, setRoleOptions] = useState<RoleInfo[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
-
     const [restricted, setRestricted] = useState(page?.restricted ?? false);
+    const [formError, setFormError] = useState("");
+
+    const { data, setData, post, processing, reset } = useForm<FormInput>({
+        permission: '',
+        target_type: '',
+        target_id: 0,
+        forbidden: false,
+    });
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -107,15 +117,31 @@ export default function Home({ page, permissions, roles, users }: HomeProps) {
 
     useEffect(() => {
         if (assignToOpen) {
-            // Fetch both users and roles on open, or filter by searchTerm
-            fetch(`/search/users?q=${encodeURIComponent(searchTerm)}`)
+            fetch(route('search.users', { q: searchTerm }))
                 .then(res => res.json())
                 .then(data => setUserOptions(data.users || []));
-            fetch(`/search/roles?q=${encodeURIComponent(searchTerm)}`)
+            fetch(route('search.roles', { q: searchTerm }))
                 .then(res => res.json())
                 .then(data => setRoleOptions(data.roles || []));
         }
     }, [assignToOpen, searchTerm]);
+
+    const handleSubmit = () => {
+        if (!data.permission || !data.target_type || !data.target_id) {
+            setFormError("Please fill in all fields.");
+            return;
+        }
+
+        setFormError(""); // clear error if passing
+
+        post(route('pages.setAbility', { page: page.slug }), {
+            onSuccess: () => {
+                reset();
+                assignToSetValue("");
+            },
+        });
+    };
+
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -134,7 +160,6 @@ export default function Home({ page, permissions, roles, users }: HomeProps) {
                                 <Label htmlFor="restricted-mode">Restricted Mode</Label>
                             </div>
 
-                            {/* Permissions Table */}
                             <div className="flex justify-end mt-6 pr-4">
                                 <Popover>
                                     <PopoverTrigger asChild>
@@ -143,23 +168,26 @@ export default function Home({ page, permissions, roles, users }: HomeProps) {
                                         </Button>
                                     </PopoverTrigger>
                                     <PopoverContent className="max-w-xs w-full">
-                                        <Label htmlFor="abilities">Set ability type</Label>
-
-                                        <Select name="abilities">
+                                        <Label htmlFor="abilityType">Set ability type</Label>
+                                        <Select
+                                            name="abilityType"
+                                            value={data.permission}
+                                            onValueChange={(value) => setData('permission', value)}
+                                        >
                                             <SelectTrigger className="min-w-[140px] w-full">
-                                                <SelectValue placeholder="Select a ability type" />
+                                                <SelectValue placeholder="Select an ability type" />
                                             </SelectTrigger>
                                             <SelectContent>
                                                 <SelectGroup>
                                                     <SelectLabel>Abilities</SelectLabel>
                                                     <SelectItem value="view">View</SelectItem>
-                                                    <SelectItem value="create">Create</SelectItem>
                                                     <SelectItem value="update">Update</SelectItem>
                                                     <SelectItem value="delete">Delete</SelectItem>
                                                 </SelectGroup>
                                             </SelectContent>
                                         </Select>
-                                        <Label htmlFor="assignTo">Assign to</Label>
+
+                                        <Label htmlFor="assignTo" className="mt-4 block">Assign to</Label>
                                         <div>
                                             <Popover open={assignToOpen} onOpenChange={setAssignToOpen}>
                                                 <PopoverTrigger asChild>
@@ -183,7 +211,8 @@ export default function Home({ page, permissions, roles, users }: HomeProps) {
                                                                         value={role.name}
                                                                         onSelect={() => {
                                                                             assignToSetValue(role.name);
-                                                                            setAssignToType("role");
+                                                                            setData('target_type', 'role');
+                                                                            setData('target_id', role.id);
                                                                             setAssignToOpen(false);
                                                                         }}
                                                                     >
@@ -198,7 +227,8 @@ export default function Home({ page, permissions, roles, users }: HomeProps) {
                                                                         value={user.name}
                                                                         onSelect={() => {
                                                                             assignToSetValue(user.name);
-                                                                            setAssignToType("user");
+                                                                            setData('target_type', 'user');
+                                                                            setData('target_id', user.id);
                                                                             setAssignToOpen(false);
                                                                         }}
                                                                     >
@@ -211,16 +241,26 @@ export default function Home({ page, permissions, roles, users }: HomeProps) {
                                                 </PopoverContent>
                                             </Popover>
                                         </div>
+
                                         <div className="flex items-center space-x-2 mt-3">
-                                            <Switch id="forbidden" />
+                                            <Switch
+                                                id="forbidden"
+                                                checked={data.forbidden}
+                                                onCheckedChange={(value) => setData('forbidden', value)}
+                                            />
                                             <Label htmlFor="forbidden">Forbidden Mode</Label>
                                         </div>
-                                        <Button className="mt-4">
+                                        {formError && (
+                                            <div className="mt-3 text-sm text-red-600 font-medium">
+                                                {formError}
+                                            </div>
+                                        )}
+
+                                        <Button className="mt-4" onClick={handleSubmit} disabled={processing}>
                                             Submit
                                         </Button>
                                     </PopoverContent>
                                 </Popover>
-
                             </div>
 
                             <div className="mt-2">
@@ -234,30 +274,21 @@ export default function Home({ page, permissions, roles, users }: HomeProps) {
                                     </TableHeader>
                                     <TableBody>
                                         {permissions.map((permission) => {
-                                            if (permission.target_type === 'App\\Models\\User') {
-                                                return (
-                                                    <TableRow key={permission.id}>
-                                                        <TableCell>{permission.ability_name}</TableCell>
-                                                        <TableCell>User: {permission.target_info.name}</TableCell>
-                                                        <TableCell>
-                                                            {permission.forbidden ? 'Yes' : 'No'}
-                                                        </TableCell>
-                                                    </TableRow>
-                                                );
-                                            } else if (permission.target_type === 'roles') {
-                                                return (
-                                                    <TableRow key={permission.id}>
-                                                        <TableCell>{permission.ability_name}</TableCell>
-                                                        <TableCell>Role: {permission.target_info.name}</TableCell>
-                                                        <TableCell>
-                                                            {permission.forbidden ? 'Yes' : 'No'}
-                                                        </TableCell>
-                                                    </TableRow>
-                                                );
-                                            }
-                                            return null;
+                                            const targetType = permission.target_type;
+                                            const targetInfo = permission.target_info;
+                                            return (
+                                                <TableRow key={permission.id}>
+                                                    <TableCell>{permission.ability_name}</TableCell>
+                                                    <TableCell>
+                                                        {targetType === 'App\\Models\\User' ? `User: ${targetInfo.name}` :
+                                                            targetType === 'roles' ? `Role: ${targetInfo.name}` : 'Unknown'}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        {permission.forbidden ? 'Yes' : 'No'}
+                                                    </TableCell>
+                                                </TableRow>
+                                            );
                                         })}
-
                                     </TableBody>
                                 </Table>
                             </div>

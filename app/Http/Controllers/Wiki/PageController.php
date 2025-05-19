@@ -11,6 +11,8 @@ use Inertia\Inertia;
 use Silber\Bouncer\Database\Ability;
 use App\Models\User;
 use Silber\Bouncer\Database\Role;
+use Bouncer;
+
 class PageController extends Controller
 {
     public function home()
@@ -181,5 +183,43 @@ class PageController extends Controller
         $page->update($validated);
 
         return redirect()->back()->with('success', 'Your action was successful!');
+    }
+    public function setAbility(Request $request, Page $page)
+    {
+        if ($request->user()->cannot('update', $page)) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'permission' => 'required|in:view,update,delete',
+            'target_type' => 'required|in:user,role',
+            'target_id' => 'required|integer',
+            'forbidden' => 'required|boolean',
+        ]);
+
+        $permission = $validated['permission'];
+        $targetType = $validated['target_type'];
+        $targetId = $validated['target_id'];
+        $forbidden = $validated['forbidden'];
+
+        // Determine the target model
+        if ($targetType === 'user') {
+            $target = User::findOrFail($targetId);
+        } else {
+            $target = Role::findOrFail($targetId);
+        }
+
+        // Use Bouncer to allow or forbid
+        if ($forbidden) {
+            Bouncer::disallow($target)->to($permission, $page);
+
+            Bouncer::forbid($target)->to($permission, $page);
+        } else {
+            Bouncer::allow($target)->to($permission, $page);
+            // Remove any forbidden if previously set
+            Bouncer::unforbid($target)->to($permission, $page);
+        }
+
+        return redirect()->back()->with('success', 'Permission updated successfully!');
     }
 }
