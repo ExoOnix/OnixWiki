@@ -25,7 +25,7 @@ class BouncerSeeder extends Seeder
         // Pages
         Bouncer::allow('superadmin')->to('create', Page::class);
         Bouncer::allow('superadmin')->to('update', Page::class);
-        Bouncer::allow('superadmin')->to('update.roles', Page::class);
+        Bouncer::allow('superadmin')->to('update.abilities', Page::class);
         Bouncer::allow('superadmin')->to('delete', Page::class);
         Bouncer::allow('superadmin')->to('view', Page::class);
         // Roles
@@ -39,7 +39,7 @@ class BouncerSeeder extends Seeder
         // Pages
         Bouncer::allow('admin')->to('create', Page::class);
         Bouncer::allow('admin')->to('update', Page::class);
-        Bouncer::allow('admin')->to('update.roles', Page::class);
+        Bouncer::allow('admin')->to('update.abilities', Page::class);
         Bouncer::allow('admin')->to('delete', Page::class);
         Bouncer::allow('admin')->to('view', Page::class);
 

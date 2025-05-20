@@ -193,6 +193,7 @@ export default function Home({ page, permissions, }: HomeProps) {
                                                     <SelectLabel>Abilities</SelectLabel>
                                                     <SelectItem value="view">View</SelectItem>
                                                     <SelectItem value="update">Update</SelectItem>
+                                                    <SelectItem value="update.abilities">Update Page Abilities</SelectItem>
                                                     <SelectItem value="delete">Delete</SelectItem>
                                                 </SelectGroup>
                                             </SelectContent>
