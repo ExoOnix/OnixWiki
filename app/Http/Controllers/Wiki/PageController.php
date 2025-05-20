@@ -64,7 +64,8 @@ class PageController extends Controller
             'auth' => [
                 'user' => $request->user(),
                 'can' => [
-                    'edit-pages' => $request->user()?->can('update', $page),
+                    'update-pages' => $request->user()?->can('update', $page),
+                    'update-roles' => $request->user()?->can('update.roles', $page),
                     'delete-pages' => $request->user()?->can('delete', $page),
                     'create-pages' => $request->user()?->can('create', Page::class),
                     'users.view' => $request->user()?->can('view', User::class),
@@ -115,7 +116,7 @@ class PageController extends Controller
     public function abilities(Request $request, Page $page)
     {
         // Check if the user has permission to update the page
-        if ($request->user()->cannot('update', $page)) {
+        if ($request->user()->cannot('update.roles', $page)) {
             abort(403);
         }
 
@@ -172,7 +173,7 @@ class PageController extends Controller
 
     public function setRestricted(Request $request, Page $page)
     {
-        if ($request->user()->cannot('update', $page)) {
+        if ($request->user()->cannot('update.roles', $page)) {
             abort(403);
         }
 
@@ -186,7 +187,7 @@ class PageController extends Controller
     }
     public function setAbility(Request $request, Page $page)
     {
-        if ($request->user()->cannot('update', $page)) {
+        if ($request->user()->cannot('update.roles', $page)) {
             abort(403);
         }
 
@@ -223,7 +224,7 @@ class PageController extends Controller
         return redirect()->back()->with('success', 'Permission updated successfully!');
     }
     public function deleteAbility(Request $request, Page $page) {
-        if ($request->user()->cannot('update', $page)) {
+        if ($request->user()->cannot('update.roles', $page)) {
             abort(403);
         }
         $validated = $request->validate([
