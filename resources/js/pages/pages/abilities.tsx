@@ -1,41 +1,15 @@
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
 import { Label } from '@/components/ui/label';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type Page } from '@/types';
 import { Head, router, useForm } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover"
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "@/components/ui/command"
 import { Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 type AbilityPerms = {
     ability_name: string;
@@ -76,14 +50,14 @@ type FormInput = {
     forbidden: boolean;
 };
 
-export default function Home({ page, permissions, }: HomeProps) {
-    const [assignToValue, assignToSetValue] = useState("");
+export default function Home({ page, permissions }: HomeProps) {
+    const [assignToValue, assignToSetValue] = useState('');
     const [assignToOpen, setAssignToOpen] = useState(false);
     const [userOptions, setUserOptions] = useState<UserInfo[]>([]);
     const [roleOptions, setRoleOptions] = useState<RoleInfo[]>([]);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState('');
     const [restricted, setRestricted] = useState(page?.restricted ?? false);
-    const [formError, setFormError] = useState("");
+    const [formError, setFormError] = useState('');
 
     const { data, setData, post, processing, reset } = useForm<FormInput>({
         permission: '',
@@ -119,26 +93,26 @@ export default function Home({ page, permissions, }: HomeProps) {
     useEffect(() => {
         if (assignToOpen) {
             fetch(route('search.users', { q: searchTerm }))
-                .then(res => res.json())
-                .then(data => setUserOptions(data.users || []));
+                .then((res) => res.json())
+                .then((data) => setUserOptions(data.users || []));
             fetch(route('search.roles', { q: searchTerm }))
-                .then(res => res.json())
-                .then(data => setRoleOptions(data.roles || []));
+                .then((res) => res.json())
+                .then((data) => setRoleOptions(data.roles || []));
         }
     }, [assignToOpen, searchTerm]);
 
     const handleSubmit = () => {
         if (!data.permission || !data.target_type || !data.target_id) {
-            setFormError("Please fill in all fields.");
+            setFormError('Please fill in all fields.');
             return;
         }
 
-        setFormError(""); // clear error if passing
+        setFormError(''); // clear error if passing
 
         post(route('pages.setAbility', { page: page.slug }), {
             onSuccess: () => {
                 reset();
-                assignToSetValue("");
+                assignToSetValue('');
             },
         });
     };
@@ -150,7 +124,7 @@ export default function Home({ page, permissions, }: HomeProps) {
             {
                 preserveState: true,
                 preserveScroll: true,
-            }
+            },
         );
     };
 
@@ -163,29 +137,19 @@ export default function Home({ page, permissions, }: HomeProps) {
                         <h1 className="text-4xl">Abilities</h1>
                         <div className="mt-3">
                             <div className="flex items-center space-x-2">
-                                <Switch
-                                    checked={restricted}
-                                    id="restricted-mode"
-                                    onCheckedChange={toggleRestricted}
-                                />
+                                <Switch checked={restricted} id="restricted-mode" onCheckedChange={toggleRestricted} />
                                 <Label htmlFor="restricted-mode">Restricted Mode</Label>
                             </div>
 
-                            <div className="flex justify-end mt-6 pr-4">
+                            <div className="mt-6 flex justify-end pr-4">
                                 <Popover>
                                     <PopoverTrigger asChild>
-                                        <Button>
-                                            Add Ability Override
-                                        </Button>
+                                        <Button>Add Ability Override</Button>
                                     </PopoverTrigger>
-                                    <PopoverContent className="max-w-xs w-full">
+                                    <PopoverContent className="w-full max-w-xs">
                                         <Label htmlFor="abilityType">Set ability type</Label>
-                                        <Select
-                                            name="abilityType"
-                                            value={data.permission}
-                                            onValueChange={(value) => setData('permission', value)}
-                                        >
-                                            <SelectTrigger className="min-w-[140px] w-full">
+                                        <Select name="abilityType" value={data.permission} onValueChange={(value) => setData('permission', value)}>
+                                            <SelectTrigger className="w-full min-w-[140px]">
                                                 <SelectValue placeholder="Select an ability type" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -199,15 +163,17 @@ export default function Home({ page, permissions, }: HomeProps) {
                                             </SelectContent>
                                         </Select>
 
-                                        <Label htmlFor="assignTo" className="mt-4 block">Assign to</Label>
+                                        <Label htmlFor="assignTo" className="mt-4 block">
+                                            Assign to
+                                        </Label>
                                         <div>
                                             <Popover open={assignToOpen} onOpenChange={setAssignToOpen}>
                                                 <PopoverTrigger asChild>
-                                                    <Button variant="outline" className="min-w-[140px] w-full justify-start text-left">
-                                                        {assignToValue ? assignToValue : "Select user or role"}
+                                                    <Button variant="outline" className="w-full min-w-[140px] justify-start text-left">
+                                                        {assignToValue ? assignToValue : 'Select user or role'}
                                                     </Button>
                                                 </PopoverTrigger>
-                                                <PopoverContent className="max-w-xs w-full p-0">
+                                                <PopoverContent className="w-full max-w-xs p-0">
                                                     <Command>
                                                         <CommandInput
                                                             placeholder="Search user or role..."
@@ -254,7 +220,7 @@ export default function Home({ page, permissions, }: HomeProps) {
                                             </Popover>
                                         </div>
 
-                                        <div className="flex items-center space-x-2 mt-3">
+                                        <div className="mt-3 flex items-center space-x-2">
                                             <Switch
                                                 id="forbidden"
                                                 checked={data.forbidden}
@@ -262,11 +228,7 @@ export default function Home({ page, permissions, }: HomeProps) {
                                             />
                                             <Label htmlFor="forbidden">Forbidden Mode</Label>
                                         </div>
-                                        {formError && (
-                                            <div className="mt-3 text-sm text-red-600 font-medium">
-                                                {formError}
-                                            </div>
-                                        )}
+                                        {formError && <div className="mt-3 text-sm font-medium text-red-600">{formError}</div>}
 
                                         <Button className="mt-4" onClick={handleSubmit} disabled={processing}>
                                             Submit
@@ -293,12 +255,13 @@ export default function Home({ page, permissions, }: HomeProps) {
                                                 <TableRow key={permission.id}>
                                                     <TableCell>{permission.ability_name}</TableCell>
                                                     <TableCell>
-                                                        {targetType === 'App\\Models\\User' ? `User: ${targetInfo.name}` :
-                                                            targetType === 'roles' ? `Role: ${targetInfo.name}` : 'Unknown'}
+                                                        {targetType === 'App\\Models\\User'
+                                                            ? `User: ${targetInfo.name}`
+                                                            : targetType === 'roles'
+                                                              ? `Role: ${targetInfo.name}`
+                                                              : 'Unknown'}
                                                     </TableCell>
-                                                    <TableCell>
-                                                        {permission.forbidden ? 'Yes' : 'No'}
-                                                    </TableCell>
+                                                    <TableCell>{permission.forbidden ? 'Yes' : 'No'}</TableCell>
                                                     <TableCell>
                                                         <Button
                                                             variant="ghost"
@@ -306,7 +269,7 @@ export default function Home({ page, permissions, }: HomeProps) {
                                                             onClick={() => handleDelete(permission.id)}
                                                             title="Delete"
                                                         >
-                                                            <Trash2 className="w-4 h-4" />
+                                                            <Trash2 className="h-4 w-4" />
                                                         </Button>
                                                     </TableCell>
                                                 </TableRow>
