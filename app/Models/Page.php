@@ -6,6 +6,10 @@ use Cviebrock\EloquentSluggable\Sluggable;
 use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
+use Illuminate\Support\Facades\Auth;
+
+use App\Models\PageRevision;
+
 
 class Page extends Model
 {
@@ -22,6 +26,23 @@ class Page extends Model
         'updated_at' => 'datetime',
     ];
 
+    public function revisions()
+    {
+        return $this->hasMany(PageRevision::class);
+    }
+    protected static function booted()
+    {
+        static::updating(function (Page $page) {
+            if ($page->isDirty('content')) {
+                $page->revisions()->create([
+                    'content' => $page->getOriginal('content'),
+                    'user_id' => Auth::id(),
+                ]);
+            }
+        });
+    }
+
+    // Sluggs, search
     public function sluggable(): array
     {
         return [
