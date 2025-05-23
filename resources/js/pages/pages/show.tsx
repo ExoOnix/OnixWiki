@@ -44,6 +44,9 @@ export default function Home({ page }: HomeProps) {
                                         <Link href={route('pages.abilities', { page: page?.slug })}>Abilites</Link>
                                     </Button>
                                 )}
+                                <Button className="mr-2" variant="default" asChild>
+                                    <Link href={route('pages.revisions', { page: page?.slug })}>Revision History</Link>
+                                </Button>
                                 {page && auth.can['delete-pages'] && (
                                     <Button
                                         variant="destructive"

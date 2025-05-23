@@ -50,7 +50,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function User() {
+export default function Role() {
     const { props } = usePage<RolesPageProps>();
     const [abilitiesState, setAbilitiesState] = useState<Record<number, boolean>>(() =>
         Object.fromEntries(props.role.abilities.map((ability) => [ability.id, ability.isAssigned])),

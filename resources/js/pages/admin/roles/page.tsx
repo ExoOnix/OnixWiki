@@ -18,7 +18,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function User() {
+export default function Roles() {
     const { props } = usePage<RolesPageProps>(); // Corrected type for usePage
     return (
         <AppLayout breadcrumbs={breadcrumbs}>

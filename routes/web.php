@@ -8,9 +8,14 @@ use App\Http\Controllers\Wiki\SearchController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Silber\Bouncer\Database\Role;
+use App\Http\Controllers\Wiki\RevisionController;
 
 // Public routes;
 Route::get('/', [PageController::class, 'home'])->name('home');
+Route::prefix('pages')->group(function () {
+    Route::get('/{page}/revisions', [RevisionController::class, 'index'])->name('pages.revisions');
+    Route::get('/{page}/revisions/{revision}', [RevisionController::class, 'show'])->name('pages.revisions.show');
+});
 
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::get('/search/suggestions', [SearchController::class, 'suggestions'])->name('search.suggestions');
