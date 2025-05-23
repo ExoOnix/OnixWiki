@@ -34,13 +34,6 @@ export default function Revisions({ page, revisions }: HomeProps) {
                 </div>
                 <div className="space-y-6">
                     <div className="w-full">
-                        <Link
-                            href={route('pages.show', { page: page })}
-                            key="Current"
-                            className="my-3 flex items-center justify-between rounded border px-4 py-2 shadow-sm"
-                        >
-                            <span>Current</span>
-                        </Link>
                         {revisions.map((revision) => (
                             <Link
                                 href={route('pages.revisions.show', { page: page, revision: revision })}

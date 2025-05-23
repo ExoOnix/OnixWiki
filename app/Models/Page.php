@@ -35,7 +35,7 @@ class Page extends Model
         static::updating(function (Page $page) {
             if ($page->isDirty('content')) {
                 $page->revisions()->create([
-                    'content' => $page->getOriginal('content'),
+                    'content' => $page->content,
                     'user_id' => Auth::id(),
                 ]);
             }

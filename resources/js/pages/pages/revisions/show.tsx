@@ -43,6 +43,7 @@ export default function Home({ page, revision }: HomeProps) {
                         <div className="flex justify-center">
                             {page && auth.can['update-pages'] && (
                                 <Button
+                                    variant="outline"
                                     onClick={() => {
                                         if (confirm('Are you sure you want to revert to this revision?')) {
                                             router.patch(route('pages.revisions.revert', { page: page.slug, revision: revision }));

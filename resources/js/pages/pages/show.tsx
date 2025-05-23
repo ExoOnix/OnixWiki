@@ -34,17 +34,17 @@ export default function Home({ page }: HomeProps) {
                             <div className="flex justify-center">
                                 {page && auth.can['update-pages'] && (
                                     <>
-                                        <Button className="mr-2" variant="default" asChild>
+                                        <Button className="mr-2" variant="outline" asChild>
                                             <Link href={route('pages.edit', { page: page.slug })}>Edit</Link>
                                         </Button>
                                     </>
                                 )}
                                 {page && auth.can['update-roles'] && (
-                                    <Button className="mr-2" variant="default" asChild>
+                                    <Button className="mr-2" variant="outline" asChild>
                                         <Link href={route('pages.abilities', { page: page.slug })}>Abilites</Link>
                                     </Button>
                                 )}
-                                <Button className="mr-2" variant="default" asChild>
+                                <Button className="mr-2" variant="outline" asChild>
                                     <Link href={route('pages.revisions', { page: page.slug })}>Revision History</Link>
                                 </Button>
                                 {page && auth.can['delete-pages'] && (
