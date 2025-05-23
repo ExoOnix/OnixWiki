@@ -35,24 +35,24 @@ export default function Home({ page }: HomeProps) {
                                 {page && auth.can['update-pages'] && (
                                     <>
                                         <Button className="mr-2" variant="default" asChild>
-                                            <Link href={route('pages.edit', { page: page?.slug })}>Edit</Link>
+                                            <Link href={route('pages.edit', { page: page.slug })}>Edit</Link>
                                         </Button>
                                     </>
                                 )}
                                 {page && auth.can['update-roles'] && (
                                     <Button className="mr-2" variant="default" asChild>
-                                        <Link href={route('pages.abilities', { page: page?.slug })}>Abilites</Link>
+                                        <Link href={route('pages.abilities', { page: page.slug })}>Abilites</Link>
                                     </Button>
                                 )}
                                 <Button className="mr-2" variant="default" asChild>
-                                    <Link href={route('pages.revisions', { page: page?.slug })}>Revision History</Link>
+                                    <Link href={route('pages.revisions', { page: page.slug })}>Revision History</Link>
                                 </Button>
                                 {page && auth.can['delete-pages'] && (
                                     <Button
                                         variant="destructive"
                                         onClick={() => {
                                             if (confirm('Are you sure you want to delete this page?')) {
-                                                router.delete(route('pages.destroy', { page: page?.slug }));
+                                                router.delete(route('pages.destroy', { page: page.slug }));
                                             }
                                         }}
                                     >

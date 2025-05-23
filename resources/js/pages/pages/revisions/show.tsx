@@ -1,7 +1,8 @@
 import BlockViewer from '@/components/block-viewer';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type Page, type PageRevision } from '@/types';
-import { Head } from '@inertiajs/react'; // Import usePage from Inertia
+import { type BreadcrumbItem, type Page, type PageRevision, type SharedData, type Auth } from '@/types';
+import { Head, router, usePage } from '@inertiajs/react';
+import { Button } from '@/components/ui/button';
 
 interface HomeProps {
     page: Page;
@@ -9,6 +10,9 @@ interface HomeProps {
 }
 
 export default function Home({ page, revision }: HomeProps) {
+    const { auth } = usePage<SharedData & { auth: Auth }>().props;
+
+
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Home',
@@ -23,7 +27,7 @@ export default function Home({ page, revision }: HomeProps) {
             href: `/pages/${page?.slug}/revisions`,
         },
         {
-            title: `Revision ${revision.id}`,
+            title: `Revision #${revision.id}`,
             href: '#',
         },
     ];
@@ -36,6 +40,19 @@ export default function Home({ page, revision }: HomeProps) {
                     <div className="ms-4 mt-4">
                         <h1 className="mb-4 text-5xl">{page?.title || 'No Title Available'}</h1>
                         {page?.content ? <BlockViewer blocks={JSON.parse(revision.content)} /> : 'No Content Available'}
+                        <div className="flex justify-center">
+                            {page && auth.can['update-pages'] && (
+                                <Button
+                                    onClick={() => {
+                                        if (confirm('Are you sure you want to revert to this revision?')) {
+                                            router.patch(route('pages.revisions.revert', { page: page.slug, revision: revision }));
+                                        }
+                                    }}
+                                >
+                                    Revert
+                                </Button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -39,6 +39,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/{page}/set-restricted', [PageController::class, 'setRestricted'])->name('pages.setRestricted');
         Route::post('/{page}/set-ability', [PageController::class, 'setAbility'])->name('pages.setAbility');
         Route::post('/{page}/delete-ability', [PageController::class, 'deleteAbility'])->name('pages.deleteAbility');
+
+        // Revisions
+        Route::patch('/{page}/revisions/{revision}', [RevisionController::class, 'revert'])->name('pages.revisions.revert');
     });
 
     // Editor routes

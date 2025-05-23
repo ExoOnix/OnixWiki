@@ -8,6 +8,8 @@ use Inertia\Inertia;
 
 use App\Models\Page;
 use App\Models\PageRevision;
+use Silber\Bouncer\Database\Role;
+use App\Models\User;
 
 class RevisionController extends Controller
 {
@@ -41,6 +43,24 @@ class RevisionController extends Controller
         return Inertia::render('pages/revisions/show', [
             'page' => $page,
             'revision' => $revision,
+            'auth' => [
+                'user' => $request->user(),
+                'can' => [
+                    'update-pages' => $request->user()?->can('update', $page),
+                    'create-pages' => $request->user()?->can('create', Page::class),
+                    'users.view' => $request->user()?->can('view', User::class),
+                    'roles.view' => $request->user()?->can('view', Role::class),
+                ],
+            ],
         ]);
+    }
+    public function revert(Request $request, Page $page, PageRevision $revision) {
+        if ($request->user()->cannot('update', $page)) {
+            abort(403);
+        }
+
+        $page->update(["content" => $revision->content]);
+
+        return redirect()->route('pages.show', $page)->with('success', 'Page created successfully!');
     }
 }
