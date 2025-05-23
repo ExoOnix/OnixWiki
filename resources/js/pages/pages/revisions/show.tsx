@@ -1,8 +1,7 @@
 import BlockViewer from '@/components/block-viewer';
-import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { type Auth, type BreadcrumbItem, type Page, type SharedData, type PageRevision } from '@/types';
-import { Head, Link, router, usePage } from '@inertiajs/react'; // Import usePage from Inertia
+import { type BreadcrumbItem, type Page, type PageRevision } from '@/types';
+import { Head } from '@inertiajs/react'; // Import usePage from Inertia
 
 interface HomeProps {
     page: Page;
@@ -10,8 +9,6 @@ interface HomeProps {
 }
 
 export default function Home({ page, revision }: HomeProps) {
-    const { auth } = usePage<SharedData & { auth: Auth }>().props;
-
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Home',
