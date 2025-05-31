@@ -123,6 +123,9 @@ To stop run `./vendor/bin/sail down`
 #### 1.
 Setup env based on .env.example. Set your database settings in the env.
 Make sure to turn off debug and set your environment settings.
+To generate the secret key you can run `echo "base64:$(openssl rand -base64 32)"` and place result in env.
+
+> **_NOTE:_**  The .env file must be in same directory as the compose file.
 
 #### 2.
 To run with docker compose, create the following file and run with `docker compose up -d`
@@ -138,7 +141,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./storage:/app/storage
+      - storage:/app/storage/app
 
   mysql:
     image: mysql:8.0
@@ -155,6 +158,26 @@ services:
 
 volumes:
   mysql_data:
+  storage:
+```
+
+#### 3.
+```
+docker-compose exec onixwiki php artisan migrate
+```
+
+#### 4.
+```
+docker-compose exec onixwiki php artisan db:seed --class BouncerSeeder
+docker-compose exec onixwiki php artisan db:seed
+```
+
+#### 5.
+
+You can now access the wiki with the created admin account with the following credentials:
+```
+Email: admin@example.com
+Password: password
 ```
 
 ### Coolify
