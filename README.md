@@ -70,6 +70,52 @@ Email: admin@example.com
 Password: password
 ```
 
+
+### Run with sail
+
+#### 0.
+Install Laravel dependancies: 
+https://laravel.com/docs/12.x/installation
+
+#### 1.
+
+Setup env based on .env.example. Set your database settings in the env.
+
+#### 2.
+```
+composer i
+```
+
+#### 3.
+```
+./vendor/bin/sail up -d
+```
+#### 4.
+```
+./vendor/bin/sail artisan key:generate
+```
+#### 5.
+```
+./vendor/bin/sail artisan migrate
+```
+#### 6.
+```
+./vendor/bin/sail artisan db:seed --class BouncerSeeder
+./vendor/bin/sail artisan db:seed
+```
+#### 7.
+```
+./vendor/bin/sail npm i
+./vendor/bin/sail npm run dev
+```
+#### 8.
+
+You can now access the wiki with the created admin account with the following credentials:
+```
+Email: admin@example.com
+Password: password
+```
+To stop run `./vendor/bin/sail down`
 ## Production Build
 
 For production deployment, use the provided nixpack and connect env variables to a external db.
