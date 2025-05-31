@@ -116,9 +116,52 @@ Email: admin@example.com
 Password: password
 ```
 To stop run `./vendor/bin/sail down`
-## Production Build
+## Running in production
 
-For production deployment, use the provided nixpack and connect env variables to a external db.
+### Docker compose
+
+#### 1.
+Setup env based on .env.example. Set your database settings in the env.
+Make sure to turn off debug and set your environment settings.
+
+#### 2.
+To run with docker compose, create the following file and run with `docker compose up -d`
+```
+services:
+  onixwiki:
+    image: exoticonix/onixwiki:latest
+    restart: always
+    depends_on:
+      - mysql
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+    volumes:
+      - ./storage:/app/storage
+
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
+```
+
+### Coolify
+To run with coolify, follow this guide: https://coolify.io/docs/applications/laravel.
+
+> **_NOTE:_**  The nixpacks.toml file is already included.
+
 
 ---
 
