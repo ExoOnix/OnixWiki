@@ -54,15 +54,18 @@ php artisan migrate
 php artisan db:seed --class BouncerSeeder
 php artisan db:seed
 ```
-
 #### 5.
+```
+php artisan storage:link
+```
+#### 6.
 
 ```
 npm install && npm run build
 composer run dev
 ```
 
-#### 6.
+#### 7.
 
 You can now access the wiki with the created admin account with the following credentials:
 ```
@@ -105,10 +108,14 @@ composer i
 ```
 #### 7.
 ```
+./vendor/bin/sail artisan storage:link
+```
+#### 8.
+```
 ./vendor/bin/sail npm i
 ./vendor/bin/sail npm run dev
 ```
-#### 8.
+#### 9.
 
 You can now access the wiki with the created admin account with the following credentials:
 ```
