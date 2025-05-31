@@ -27,19 +27,48 @@ OnixWiki is a wiki system with an editor, permission system, and admin.
 
 
 ## Local Development Setup
-To get started with local development use sail.
+
+### Run without docker
+
+#### 0.
+Install Laravel dependancies: 
+https://laravel.com/docs/12.x/installation
+
+#### 1.
+
+Setup env based on .env.example. Set your database settings in the env.
+
+#### 2.
+```
+composer install
+php artisan key:generate
+```
+
+#### 3.
+```
+php artisan migrate
+```
+
+#### 4.
+```
+php artisan db:seed --class BouncerSeeder
+php artisan db:seed
+```
+
+#### 5.
 
 ```
-sail up -d
-
-sail artisan migrate
-
-sail artisan db:seed --class BouncerSeeder
-
-sail npm run dev
+npm install && npm run build
+composer run dev
 ```
 
+#### 6.
 
+You can now access the wiki with the created admin account with the following credentials:
+```
+Email: admin@example.com
+Password: password
+```
 
 ## Production Build
 
