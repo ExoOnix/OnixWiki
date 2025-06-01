@@ -28,6 +28,9 @@ OnixWiki is a wiki system with an editor, permission system, and admin.
 ## Why its different?
 
 - **Better UI/UX**: Features a modern UI/UX with ShadCN/Ui components, seamless page transitions, and various features like search suggestions.
+- **Better Access Control**: Features a robust permission system with global and per page permissions.
+- **Better Administration**: Makes it easy to administer users and perform administration actions.
+- **Easier to deploy**: Deploy easily with docker.
 
 ## Local Development Setup
 
