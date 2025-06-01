@@ -17,14 +17,17 @@
 
 OnixWiki is a wiki system with an editor, permission system, and admin.
 
-### Key Features
+## Key Features
 
 - **Page system**: Includes a page system with pages which can be created.
 - **Editor**: Includes a block editor with varius block types.
 - **Robust Permission system**: Manage wiki-wide permissions and also manage per page permissions.
 - **Administration**: Includes users and roles managment administration panels.
----
 
+
+## Why its different?
+
+- **Better UI/UX**: Features a modern UI/UX with ShadCN/Ui components, seamless page transitions, and various features like search suggestions.
 
 ## Local Development Setup
 
