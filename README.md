@@ -25,6 +25,7 @@ OnixWiki is a wiki system with an editor, permission system, and admin.
 - **Editor**: Includes a block editor with varius block types.
 - **Robust Permission system**: Manage wiki-wide permissions and also manage per page permissions.
 - **Administration**: Includes users and roles managment administration panels.
+- **Revisions**: Revert changes and view page revisions.
 
 
 ## Why its different?
