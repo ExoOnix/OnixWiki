@@ -1,5 +1,7 @@
 # OnixWiki
 
+![Home Page](docs/home.png)
+
 <div align="center">
   <a href="https://github.com/ExoOnix/OnixWiki">
     <img src="https://img.shields.io/github/stars/ExoOnix/OnixWiki?style=for-the-badge" alt="GitHub stars" />
